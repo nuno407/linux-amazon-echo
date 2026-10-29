@@ -8,12 +8,12 @@ import argparse
 import hashlib
 import importlib.util
 import json
-import urllib.request
 from pathlib import Path
 
-# sound/soc/codecs/tas5805m_mono.h of github.com/amazon-oss/android_kernel_amazon_mt8163 (../PROVENANCE.md)
-TAS5805M_URL = ('https://raw.githubusercontent.com/amazon-oss/android_kernel_amazon_mt8163/'
-                'b27e73e3b00b1184d33f1ae5aa55dc0a1e8d491f/sound/soc/codecs/tas5805m_mono.h')
+# sound/soc/codecs/tas5805m_mono.h of github.com/amazon-oss/android_kernel_amazon_mt8163, as copied into
+# this repository (../../SOURCES.md)
+TAS5805M_PATH = (Path(__file__).resolve().parent.parent.parent /
+                 'third_party/amazon-mt8163/sound/soc/codecs/tas5805m_mono.h')
 TAS5805M_SHA256 = '9eec16003ca73b1a5295c520cda2b7d8551872e36a263145487c05986f9332aa'
 
 
@@ -30,7 +30,7 @@ def main():
     ap.add_argument('--bluetooth', required=True, type=Path, help='locally supplied mt7668pr2h.bin')
     ap.add_argument('--regulatory', required=True, type=Path, help='directory with regulatory.db and its signature')
     ap.add_argument('--tas5805m', type=Path,
-                    help='a local copy of tas5805m_mono.h (default: download it from the pinned commit)')
+                    help='another copy of tas5805m_mono.h (default: the one in third_party/amazon-mt8163)')
     ap.add_argument('--output', type=Path, required=True,
                     help='where to write them, as lib/firmware is laid out')
     a = ap.parse_args()
@@ -38,11 +38,7 @@ def main():
     files['mediatek/mt7668pr2h.bin'] = a.bluetooth.read_bytes()
     for name in ('regulatory.db', 'regulatory.db.p7s'):
         files[name] = (a.regulatory / name).read_bytes()
-    if a.tas5805m:
-        source = a.tas5805m.read_bytes()
-    else:
-        with urllib.request.urlopen(TAS5805M_URL) as r:
-            source = r.read()
+    source = (a.tas5805m or TAS5805M_PATH).read_bytes()
     if hashlib.sha256(source).hexdigest() != TAS5805M_SHA256:
         raise ValueError('tas5805m_mono.h is not the pinned file')
     files['tas5805m/tas5805m_dsp_default.bin'] = load('build-tas5805m-cfg').build(source.decode())

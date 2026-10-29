@@ -1,6 +1,6 @@
 # The patches and board files, in the order they are applied: one shell command a line, run from the
 # work directory with PUB (this directory), KTREE and KDIR (the kernel tree), WORK and AMZ (Amazon's
-# kernel files, fetched by build.sh) set, and apply (build.sh) to apply a patch once. An overlay gives
+# kernel files, ../third_party/amazon-mt8163) set, and apply (build.sh) to apply a patch once. An overlay gives
 # its own series, with these steps and its own in between (README.md, "Overlays").
 #
 # MT8163 support, from the linux-mtk tree (PROVENANCE.md), carried to 7.2

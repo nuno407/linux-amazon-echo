@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #
 # Build Amazon's MT7668 Wi-Fi driver (gen4, out of tree) against the configured Linux 7.2 kernel.
-# Sources: Amazon's tree as ../build.sh fetches it (github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi,
-# ../PROVENANCE.md), with the patches in patches/ applied in order.
+# Sources: Amazon's tree as copied into ../../third_party/amazon-mt76x8-wifi (../../SOURCES.md), with
+# the patches in patches/ applied in order.
 #   wifi/build.sh SRC KERNEL_OBJ_DIR BUILD_DIR OUT_KO
 set -e
 H=$(CDPATH= cd -- "$(dirname "$0")" && pwd)

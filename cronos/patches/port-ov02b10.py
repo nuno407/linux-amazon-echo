@@ -5,7 +5,8 @@ in Amazon's MT8163 kernel into a header for a capture driver.
     port-ov02b10.py <ov02bmipiraw_Sensor.c> <ov02b10-init.h>
 
 The source is drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c of
-github.com/amazon-oss/android_kernel_amazon_mt8163 (build.sh fetches it, ../PROVENANCE.md).
+github.com/amazon-oss/android_kernel_amazon_mt8163, copied into ../../third_party/amazon-mt8163
+(../../SOURCES.md).
 """
 import pathlib
 import re

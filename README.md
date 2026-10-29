@@ -24,9 +24,9 @@ are trademarks of Amazon.com, Inc. or its affiliates. MediaTek is a trademark of
 - Docker. The build runs in an arm64 Debian 12 container (`docker/Dockerfile`), natively on an arm64
   host (an Apple silicon Mac, for example) and under emulation elsewhere, which is much slower.
 - About 4 GB of disk for each device's kernel tree. It is kept in a Docker volume, not on the host.
-- A network connection the first time: the kernel tarball (about 160 MB); for athena, a few firmware
-  files from linux-firmware; for cronos, a few files of Amazon's GPL MT8163 kernel and its MT7668
-  Wi-Fi driver. Each is checked against its sha256 sum or git tree hash.
+- A network connection the first time: the kernel tarball (about 160 MB) and, for athena, a few
+  firmware files from linux-firmware, each checked against its sha256 sum. Every other source the
+  builds use is in this repository ([SOURCES.md](SOURCES.md)).
 
 ## Building
 
@@ -72,9 +72,11 @@ Each device directory has the same parts:
   arguments (`athena/config`); cronos has a whole configuration (`cronos/config/cronos.config`).
 - `PROVENANCE.md`: where each patch comes from.
 
-athena also has `board/`: the board files its build starts from (the 6.18 device tree, the sound
-card, the panel tables and patches, the configuration and the boot image packer), with our changes to
-them in `base-patches/`.
+`third_party/` holds the files of Amazon's GPL kernels that cronos uses, and athena's `board/` the
+board files its build starts from; both are copied as they were published. [SOURCES.md](SOURCES.md)
+lists every source the builds use, copied or downloaded, with its origin and sha256 sums, and
+`tools/check-sources.py` checks the copies against it (and, with `--upstream`, whether their origins
+have changed).
 
 ## Overlays
 
@@ -107,8 +109,8 @@ scripts are MIT ([LICENSE](LICENSE)). athena's board files, in `athena/board/` (
 sound card, panel tables and patches, its configuration and its boot image packer), are MIT under
 their own notice ([athena/board/LICENSE](athena/board/LICENSE)), except where a file's SPDX line says
 otherwise: the patches and drivers are GPL-2.0, the device tree GPL-2.0 OR MIT (see
-[athena/README.md](athena/README.md), "The board files"). The cronos build
-fetches the files of Amazon's GPL kernels it ports, at pinned commits (see
+[athena/README.md](athena/README.md), "The board files"). The files of Amazon's GPL kernels the
+cronos build ports are in `third_party/`, under the GPL as their files state (see
 [cronos/PROVENANCE.md](cronos/PROVENANCE.md)). The firmware files the athena build downloads are
 MediaTek's, under its license in linux-firmware (`LICENCE.mediatek`), and go into the ramdisk as
 separate files.

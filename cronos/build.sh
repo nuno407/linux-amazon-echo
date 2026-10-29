@@ -24,21 +24,11 @@ KVER=7.2.13
 KURL=https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-$KVER.tar.xz
 KSHA256=08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c
 
-# Amazon's GPL kernel for its MT8163 devices: the files the patches port, fetched at build time from
-# this commit and checked by their sha256 (PROVENANCE.md).
-AMAZON_URL=https://raw.githubusercontent.com/amazon-oss/android_kernel_amazon_mt8163
-AMAZON_COMMIT=b27e73e3b00b1184d33f1ae5aa55dc0a1e8d491f
-AMAZON_FILES="
-48c771ff26f0f545d8a2efe8f28de8ec19f35c38bb232cc9fc9be0583b093dce sound/soc/codecs/tlv320aic3101.c
-343499af4967bad5a6d03fb0ed2af2ac3bc00fdf04fcef55f4e8b7872ef7620c sound/soc/codecs/tlv320aic3101.h
-7a75ac0a8cbc19c02d2de8fc43a779fc9c79034b68f4635560bc7dd55b3a5040 drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c
-"
-
-# Amazon's GPL MT7668 Wi-Fi driver, built out of tree (wifi/build.sh), fetched at build time from this
-# commit and checked by its git tree hash.
-WIFI_REPO=https://github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi.git
-WIFI_COMMIT=214defc87321931c7d2d4444ba40bef56da74e6e
-WIFI_TREE=0770f0e4f4848cc4c7e51a4cf4816511b6cd9df8
+# Amazon's sources, copied into this repository as they were published (../SOURCES.md): the files of
+# its GPL kernel for its MT8163 devices that the patches port, and its MT7668 Wi-Fi driver, built out
+# of tree (wifi/build.sh).
+AMZ=$HERE/../third_party/amazon-mt8163
+WIFI_SRC=$HERE/../third_party/amazon-mt76x8-wifi
 
 # What an overlay may change. The build's identity is fixed, so a build is reproducible; it is what
 # `uname -v` says, so move the timestamp on whenever the kernel changes.
@@ -113,30 +103,7 @@ else
 	tar -C "$WORK" -xJf "$CACHE/linux-$KVER.tar.xz"
 fi
 
-# 2. Amazon's sources, the kernel files and the Wi-Fi driver's tree, fetched once into
-# the cache and checked
-AMZ=$CACHE/amazon-mt8163-${AMAZON_COMMIT:0:12}
-echo "$AMAZON_FILES" | while read -r sha path; do
-	if [ -n "$path" ]; then fetch "$AMAZON_URL/$AMAZON_COMMIT/$path" "$AMZ/$path" "$sha"; fi
-done
-WIFI_SRC=$CACHE/mt76x8-wifi-${WIFI_COMMIT:0:12}
-if [ ! -f "$WIFI_SRC/.tree" ] || [ "$(cat "$WIFI_SRC/.tree")" != "$WIFI_TREE" ]; then
-	rm -rf "$WIFI_SRC" "$WIFI_SRC.git"
-	git init -q "$WIFI_SRC.git"
-	git -C "$WIFI_SRC.git" fetch -q --depth=1 "$WIFI_REPO" "$WIFI_COMMIT"
-	tree=$(git -C "$WIFI_SRC.git" rev-parse "$WIFI_COMMIT^{tree}")
-	[ "$tree" = "$WIFI_TREE" ] || { echo "$WIFI_REPO $WIFI_COMMIT is tree $tree, not $WIFI_TREE" >&2; exit 1; }
-	mkdir -p "$WIFI_SRC"
-	git -C "$WIFI_SRC.git" archive "$WIFI_COMMIT" | tar -x -C "$WIFI_SRC"
-	# The files as extracted must be that tree, blob for blob.
-	git -C "$WIFI_SRC.git" ls-tree -r "$WIFI_COMMIT" | while read -r mode type sha path; do
-		[ "$(git hash-object "$WIFI_SRC/$path")" = "$sha" ] || { echo "$WIFI_SRC/$path does not match $sha" >&2; exit 1; }
-	done
-	rm -rf "$WIFI_SRC.git"
-	echo "$WIFI_TREE" > "$WIFI_SRC/.tree"
-fi
-
-# 3. Patches and board files, one step a line of the series, in order. The scripts find the tree in
+# 2. Patches and board files, one step a line of the series, in order. The scripts find the tree in
 # KDIR, and Amazon's kernel files in AMZ.
 OVL=${OVL:-}
 KDIR=$KTREE
@@ -147,7 +114,7 @@ while IFS= read -r step; do
 	(cd "$WORK" && eval "$step") || { echo "series step failed: $step" >&2; exit 1; }
 done < "$SERIES"
 
-# 4. Configuration
+# 3. Configuration
 cd "$KTREE"
 mkdir -p out
 cp "$CONFIG" out/.config
@@ -158,7 +125,7 @@ scripts/config --file out/.config --set-str LOCALVERSION "$LOCALVERSION"
 make -s O=out olddefconfig
 grep -qxF "CONFIG_LOCALVERSION=\"$LOCALVERSION\"" out/.config || { echo "config check failed: LOCALVERSION" >&2; exit 1; }
 
-# 5. Build. The device tree is padded, which leaves the boot loader room for its own additions.
+# 4. Build. The device tree is padded, which leaves the boot loader room for its own additions.
 make -s O=out -j"$JOBS" Image.gz dtbs modules
 release=$(make -s O=out kernelrelease)
 cp out/arch/arm64/boot/Image.gz "$OUT/Image.gz"
@@ -166,7 +133,7 @@ dtc -q -I dtb -O dtb -p 262144 -o "$OUT/cronos.dtb" "out/arch/arm64/boot/dts/med
 cp out/.config "$OUT/kernel.config"
 echo "$release" > "$OUT/kernel.release"
 
-# 6. Modules, as lib/modules/<release> under the root of a tarball
+# 5. Modules, as lib/modules/<release> under the root of a tarball
 R=$WORK/modules-root
 rm -rf "$R"
 make -s O=out INSTALL_MOD_PATH="$R" modules_install

@@ -17,8 +17,10 @@ github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi, branch `lineage-18.1`, 
 | Input | Source |
 | --- | --- |
 | Linux 7.2.13 | kernel.org, `linux-7.2.13.tar.xz`, sha256 `08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c` |
-| Amazon's kernel files the patches port | android_kernel_amazon_mt8163 at the commit above, fetched at build time and checked by sha256 (`build.sh`, `AMAZON_FILES`): `sound/soc/codecs/tlv320aic3101.c` and `.h`, `drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c` |
-| The MT7668 Wi-Fi driver | android_kernel_amazon_mt76x8-wifi at the commit above, fetched at build time and checked by its git tree hash (`build.sh`, `WIFI_*`) |
+| Amazon's kernel files the patches and tools port | android_kernel_amazon_mt8163 at the commit above, copied as they are into `../third_party/amazon-mt8163/` with the tree's `COPYING`: `sound/soc/codecs/tlv320aic3101.c` and `.h`, `sound/soc/codecs/tas5805m_mono.h`, `drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c` |
+| The MT7668 Wi-Fi driver | android_kernel_amazon_mt76x8-wifi at the commit above, the files the build uses copied as they are into `../third_party/amazon-mt76x8-wifi/` |
+
+Every copied file, its origin and its sha256 are listed in [../SOURCES.md](../SOURCES.md).
 
 ## patches/
 
@@ -41,7 +43,7 @@ github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi, branch `lineage-18.1`, 
 | `0005-cronos-panel-driver.sh`, `panel-amazon-cronos-st7701s.c` | public tree | the timings and supplies of `drivers/misc/mediatek/lcm/st7701s_wsvga_dsi_vdo_cronos/st7701s_wsvga_dsi_vdo_cronos.c` (480x960; front porch, sync and back porch 30/6/20 horizontally, 21/6/16 vertically), on mainline's DRM panel API |
 | `0005-mt8163-cronos-sound.sh`, `mt8163-cronos.c` | public tree | the sound card after `sound/soc/mediatek/mt_soc_audio_8163_amzn` (DL1 out of I2S1 and I2S3, the APLL clock, the ADC's `tlv3101_hw_params`), on linux-mtk's MT8163 AFE driver |
 | `0006-amazon-spi-pcm.sh`, `amazon-spi-pcm.c` | public tree | the microphone FPGA's protocol of Lab126's `sound/soc/mediatek/mt_soc_audio_8163_amzn/amzn-spi-pcm/amzn-mt-spi-pcm.c` and `dough.h` (GPL-2.0), rewritten for the current ASoC API. The FPGA's bitstream is not in the published source: it is taken from the unit's own boot image (`tools/`) |
-| `port-aic3101.py`, `0007-tlv320aic3101.sh` | public tree | Amazon's TLV320AIC3101 driver, `sound/soc/codecs/tlv320aic3101.c` and `.h` (Copyright 2011 Texas Instruments, GPL-2.0), ported to the 7.2 ASoC component API at build time from the fetched files |
+| `port-aic3101.py`, `0007-tlv320aic3101.sh` | public tree | Amazon's TLV320AIC3101 driver, `sound/soc/codecs/tlv320aic3101.c` and `.h` (Copyright 2011 Texas Instruments, GPL-2.0), ported to the 7.2 ASoC component API at build time from the copies in `../third_party/amazon-mt8163/` |
 | `0008-tas5805m-delay.sh` | public tree | the 0xFE delay instruction in a TAS5805M configuration, as `sound/soc/codecs/tas5805m.c` handles it (`TAS5805M_DELAY` 254) |
 | `port-ov02b10.py` | public tree | extracts `sensor_init` of `drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c` (Copyright 2020 MediaTek Inc.) into a header for a camera driver; this repository has none, so nothing here builds it |
 | `0011-mt8163-thermal.sh` | public tree | mainline's `auxadc_thermal.c` set up as `drivers/misc/mediatek/thermal/mt8163/mtk_ts_cpu.c` does: the CPU sensor TS3, the AUXADC channel handed over with `AUXADC_CON1_CLR`/`_SET`, `TS_CON1[5:4]` cleared, `TEMPMSRCTL1`'s 0x10e bits cleared |
@@ -83,4 +85,4 @@ changes after 7.0 and drivers for other devices; 0000 takes the MT8163 ones.)
 | --- | --- | --- |
 | `extract-fpga-fw.py` | our own | finds the microphone FPGA's two bitstreams (`i2s_to_spi_4ch_v208.bin`, `_v193.bin`, the names `amzn-mt-spi-pcm.c` requests) in the unit's own stock boot image. The bitstreams are not in this repository and not in any published source |
 | `build-tas5805m-cfg.py` | public tree | the amplifier's settings, the `tas5805m_init_mono_mini` table of `sound/soc/codecs/tas5805m_mono.h`, as a configuration for mainline's tas5805m driver |
-| `prepare-firmware.py` | our own | runs the two above, with the Bluetooth firmware and the regulatory database the user supplies, into a firmware directory; fetches `tas5805m_mono.h` at the commit above, checked by sha256 |
+| `prepare-firmware.py` | our own | runs the two above, with the Bluetooth firmware and the regulatory database the user supplies, into a firmware directory; reads `tas5805m_mono.h` from `../third_party/amazon-mt8163/`, checked by sha256 |

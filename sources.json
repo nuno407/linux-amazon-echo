@@ -1,0 +1,1159 @@
+{
+ "about": "Every source the builds use. 'copied': in this repository, byte for byte as at the origin's commit; 'fetched': downloaded by the build and checked by sha256. tools/check-sources.py checks both.",
+ "copied": [
+  {
+   "name": "athena-board",
+   "local": "athena/board",
+   "origin": {
+    "repo": "https://github.com/HuskerMinion/techo5",
+    "branch": "main",
+    "commit": "d44e005b2df507bfeae4703fc3e717f34832038a",
+    "path": "tools/linux/athena/kernel",
+    "tree": "460e4e5ea8ae3297a231d05f25b664c82ab0d3b7"
+   },
+   "license": "MIT (LICENSE, the repository's LICENSE at that commit); patches and drivers GPL-2.0, the device tree GPL-2.0 OR MIT, as their SPDX lines say",
+   "files": {
+    "LICENSE": {
+     "path": "LICENSE",
+     "blob": "c8bdbca9e05083af20a77b05cd78d82b8dca706b",
+     "sha256": "7d28464a69e308399941e24c9667fea00d35170c287084d02ccc472d2d247f1e"
+    },
+    "athena_defconfig": {
+     "path": "tools/linux/athena/kernel/athena_defconfig",
+     "blob": "ed24d6e348613a65b7d43beb4f889c66f131d8d9",
+     "sha256": "2034791e4f3941b5d762f1fc399519be581aad20f2a50f98078a4999901c6f39"
+    },
+    "check-boot.py": {
+     "path": "tools/linux/athena/kernel/check-boot.py",
+     "blob": "631e99b9ad8eb40ea2464d7316b67d6a9e1dcce9",
+     "sha256": "7378b00efd93d034212e13abf9b88020313d5569b3a0fd24add7a4e804611973"
+    },
+    "dsp_slot.py": {
+     "path": "tools/linux/athena/kernel/dsp_slot.py",
+     "blob": "def959cba5fa20ad8f7c814bb6a3f2753f68b95e",
+     "sha256": "3219a4076b2f014943558baacca0f79009c21c56f0d341aae2a3262c7ecddd78"
+    },
+    "dts/mt8183-amazon-athena.dts": {
+     "path": "tools/linux/athena/kernel/dts/mt8183-amazon-athena.dts",
+     "blob": "1a355c13f80688f34cd1c2d7187e8e44ae8add8b",
+     "sha256": "f61333fb38ef682f21da81c139ddeab67e8936e2e423e5292af93fd1dea8e538"
+    },
+    "mkfwcpio.py": {
+     "path": "tools/linux/athena/kernel/mkfwcpio.py",
+     "blob": "eff19f80df95e8862c0162b869e6817f7b6b33a8",
+     "sha256": "2b7092f00eddc070a3bb92ff7407f6ca29afe226aa8ffbf8436db87f16843918"
+    },
+    "pack.py": {
+     "path": "tools/linux/athena/kernel/pack.py",
+     "blob": "f2808abb39933682a4b58ee5a159d694d5725c84",
+     "sha256": "4cf98d83ea8e27cab3289f5720e2a9c2110d229e56e99ed71006f4f5e30f6635"
+    },
+    "patches/0001-mt8183-afe-leave-cache-only-before-enabling-clocks.patch": {
+     "path": "tools/linux/athena/kernel/patches/0001-mt8183-afe-leave-cache-only-before-enabling-clocks.patch",
+     "blob": "7d34a47f017b31d690efce8767214cb4c7af511a",
+     "sha256": "cbf8db23bce4057b5d0e22a278c662feb8541d1bfa6fef16debcdc104910831f"
+    },
+    "patches/panel/0001-dt-bindings-ili9881c-add-amazon-athena-panels.patch": {
+     "path": "tools/linux/athena/kernel/patches/panel/0001-dt-bindings-ili9881c-add-amazon-athena-panels.patch",
+     "blob": "cbfa3d6715a9779ee7d2b356a5e7634ba5840aea",
+     "sha256": "47d3fee0645a7c24302264667ecbc9638f7d102805085cfd81c4f165379b753c"
+    },
+    "patches/panel/0002-drm-panel-ili9881c-add-amazon-athena-panels.patch": {
+     "path": "tools/linux/athena/kernel/patches/panel/0002-drm-panel-ili9881c-add-amazon-athena-panels.patch",
+     "blob": "128f07c7b3500466464b1cfb1d6c63621a59300c",
+     "sha256": "09329e7b0fa198d233e563921302f8bca7032fb8f74027e38ec98b42127be111"
+    },
+    "patches/panel/0003-dt-bindings-jd9365da-add-amazon-athena-panels.patch": {
+     "path": "tools/linux/athena/kernel/patches/panel/0003-dt-bindings-jd9365da-add-amazon-athena-panels.patch",
+     "blob": "884474bb9a3e0161232c11c56af85c64648e2507",
+     "sha256": "f61f7c3423ff6afded208e3877e944f7c4174fb85f7b64fae49fbac1dadafb32"
+    },
+    "patches/panel/0004-drm-panel-jd9365da-add-amazon-athena-panels.patch": {
+     "path": "tools/linux/athena/kernel/patches/panel/0004-drm-panel-jd9365da-add-amazon-athena-panels.patch",
+     "blob": "d1c312cb64c57f74b40a6e4a0bea3dad6904ea31",
+     "sha256": "6c375ebdf10b4d67ab973247798b2f4328902d01e49762ab678370837dd736cf"
+    },
+    "patches/panel/0005-drm-panel-jd9365da-athena-boe-new-link.patch": {
+     "path": "tools/linux/athena/kernel/patches/panel/0005-drm-panel-jd9365da-athena-boe-new-link.patch",
+     "blob": "d0f8fe4efd850458512b9e70a992db061cc4128a",
+     "sha256": "04edd4c2a7546325f2ea6f0a818c5817f19a0176e2031bc73a3465cde34609ea"
+    },
+    "patches/patch-afe-awb-dl1.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-afe-awb-dl1.py",
+     "blob": "db0071556bfccce754aa14e3b1331b3da8dfa492",
+     "sha256": "3e0a26c8340281883d097941a51775da54ee9a4a79392a8a57acfeb8c0eb03c7"
+    },
+    "patches/patch-afe-di2.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-afe-di2.py",
+     "blob": "2463e4adbbd4211c20f0a2d7b7a782214e65c74b",
+     "sha256": "7117db1efd6aa636cda6dc6dab8fde8176c1791c0f6699fa88d827f0dd6aec17"
+    },
+    "patches/patch-btmtksdio-bdaddr.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-btmtksdio-bdaddr.py",
+     "blob": "46ee82a66bbd005ac68ce022b27a78312bcde507",
+     "sha256": "b4e870f3307cfc849fef1b7a3bfa3aa871c443786c73202c3be11ba1f092fd40"
+    },
+    "patches/patch-btmtksdio-late-register.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-btmtksdio-late-register.py",
+     "blob": "e38f2700b49d64a55bda77780ad43a15539036a4",
+     "sha256": "d0c3dae80ca8e4ccc9546aa124af18ad23fa0cd762079b8f481cfd378bb85737"
+    },
+    "patches/patch-btmtksdio-p192.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-btmtksdio-p192.py",
+     "blob": "7998ff41f498d35fb0baf4003c6792a712c48f2b",
+     "sha256": "5fd8172adf901f319f670f4c1660dc5a4d25a5af270545b02b9f71f63ef4a195"
+    },
+    "patches/patch-cci-sram.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-cci-sram.py",
+     "blob": "e57324a3d0d84aa06410e521ced4c5bd6b053de9",
+     "sha256": "408aa543f62b1f3850ee9355f87f101872839a9219e23926ab41772fc6370c1c"
+    },
+    "patches/patch-display.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-display.py",
+     "blob": "73c618e5e87752c337831f00666aea60a76b2159",
+     "sha256": "12cfa87572dfe17fcfacae01de0b39cc69e6989744d2808633749c3402095682"
+    },
+    "patches/patch-kbuild.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-kbuild.py",
+     "blob": "ab9bcaa2a40176571952c16af3f45c4f7b9afdd8",
+     "sha256": "5768f2ab1d562559d25b7ef3a2c829413e24b4714fb30882aeae25ec684c8a34"
+    },
+    "patches/patch-mt7663s-firmware-hold.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-mt7663s-firmware-hold.py",
+     "blob": "b08b0704faa5f5ecb0d8b3b40ce79c765760fad8",
+     "sha256": "dbe34dd0ffaaa8b47003140dedbda3235cd89c6cdd2bc9760bc1967dda5e8695"
+    },
+    "patches/patch-tas5805m-dsp-slot.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-tas5805m-dsp-slot.py",
+     "blob": "b268eec06e54c2a1272a5dc52166182e679549eb",
+     "sha256": "6119f711aad362037c62ce8a76e33c0fd83a2041324e96ef828de88e99f2a28d"
+    },
+    "patches/patch-tcs3400.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-tcs3400.py",
+     "blob": "e45075625836a6ba26b83c05873f24a443659ba8",
+     "sha256": "5ade189fe0f104bfd4d6322606b4a9ba5ff3f56b6a31a7221f02611994835183"
+    },
+    "patches/patch-thermal-devinfo.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-thermal-devinfo.py",
+     "blob": "57bf75a8996577f7941163ac519d14d5676ccaa8",
+     "sha256": "df93f2e45ba9cc6f0907f1080a025f4e05532c4459a8ec669c4965fb05b86daa"
+    },
+    "patches/patch-usb-force-vbus.py": {
+     "path": "tools/linux/athena/kernel/patches/patch-usb-force-vbus.py",
+     "blob": "fc37d9752b84c2527c2b31332876323f7a77817f",
+     "sha256": "8fe8495002f04370a2550a36510eb813ae27fb421b00429c30fc3fd5ab38f309"
+    },
+    "src/mt8183-athena.c": {
+     "path": "tools/linux/athena/kernel/src/mt8183-athena.c",
+     "blob": "ca5cef8789df64180831c0b721d63d103faa694c",
+     "sha256": "2d70fc6e8e1cbbdbded2d89f2babd4b8139971a1ff230582ecf9ca18e03646ce"
+    },
+    "src/panel/panel-athena-select.c": {
+     "path": "tools/linux/athena/kernel/src/panel/panel-athena-select.c",
+     "blob": "c7237ad1766b573467a2d14c99466a2b7eba509b",
+     "sha256": "4cb6851ab0142cfcf4ec7dadc2baf6ea14e98691e02bf477ec15ccdc792a7720"
+    }
+   }
+  },
+  {
+   "name": "amazon-mt8163",
+   "local": "third_party/amazon-mt8163",
+   "origin": {
+    "repo": "https://github.com/amazon-oss/android_kernel_amazon_mt8163",
+    "branch": "lineage-18.1",
+    "commit": "b27e73e3b00b1184d33f1ae5aa55dc0a1e8d491f",
+    "path": ".",
+    "tree": "2074e11a302b3bb6a4d5ec77184f536cbaee3ff6"
+   },
+   "license": "GPL-2.0 (COPYING, the tree's own, and each file's notice)",
+   "files": {
+    "COPYING": {
+     "path": "COPYING",
+     "blob": "ca442d313d86dc67e0a2e5d584b465bd382cbf5c",
+     "sha256": "af8067302947c01fd9eee72befa54c7e3ef8a48fecde7fd71277f2290b2bf0f7"
+    },
+    "drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c": {
+     "path": "drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c",
+     "blob": "3924ffbcabc95565e1dd652fb1016a1c7c1965d9",
+     "sha256": "7a75ac0a8cbc19c02d2de8fc43a779fc9c79034b68f4635560bc7dd55b3a5040"
+    },
+    "sound/soc/codecs/tas5805m_mono.h": {
+     "path": "sound/soc/codecs/tas5805m_mono.h",
+     "blob": "5d73670ccee49966a141786c5713f0b3151c377c",
+     "sha256": "9eec16003ca73b1a5295c520cda2b7d8551872e36a263145487c05986f9332aa"
+    },
+    "sound/soc/codecs/tlv320aic3101.c": {
+     "path": "sound/soc/codecs/tlv320aic3101.c",
+     "blob": "1ebdb1e629f95a465e7d688f547432fa4fbda3ea",
+     "sha256": "48c771ff26f0f545d8a2efe8f28de8ec19f35c38bb232cc9fc9be0583b093dce"
+    },
+    "sound/soc/codecs/tlv320aic3101.h": {
+     "path": "sound/soc/codecs/tlv320aic3101.h",
+     "blob": "4c30611910f27f5e7dab13fa38cb35b6172ee58d",
+     "sha256": "343499af4967bad5a6d03fb0ed2af2ac3bc00fdf04fcef55f4e8b7872ef7620c"
+    }
+   }
+  },
+  {
+   "name": "amazon-mt76x8-wifi",
+   "local": "third_party/amazon-mt76x8-wifi",
+   "origin": {
+    "repo": "https://github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi",
+    "branch": "lineage-18.1",
+    "commit": "214defc87321931c7d2d4444ba40bef56da74e6e",
+    "path": ".",
+    "tree": "0770f0e4f4848cc4c7e51a4cf4816511b6cd9df8"
+   },
+   "license": "GPL-2.0 (each file's notice; the tree has no licence file of its own)",
+   "files": {
+    "configs/cronos.config": {
+     "path": "configs/cronos.config",
+     "blob": "77b4efc3a6f7bc385b80cd1de57b897405920719",
+     "sha256": "384b27c3eb6112cd8bcaaa19f1a66831de05c350e43f9f47cbc8f940d43b9a71"
+    },
+    "module/Makefile": {
+     "path": "module/Makefile",
+     "blob": "429c6900ece6654eff0f153223efe3facd9e24fd",
+     "sha256": "ac6719ca541776cc6906afd69d011aec978d879eb1f792b711e31118facc9a6b"
+    },
+    "module/chips/mt6632.c": {
+     "path": "module/chips/mt6632.c",
+     "blob": "938fae62055aed58b7de40437f522421ae54458c",
+     "sha256": "1b192b99a02a1ab0c575596d9d5a2cdabd0ad7dd4f7c079be017e09c11e132ff"
+    },
+    "module/chips/mt7668.c": {
+     "path": "module/chips/mt7668.c",
+     "blob": "3b0b9c71c2073b3815fbb5454eccf2fab95c5143",
+     "sha256": "6871c1fb2d64957da2bfac02cb9314bd99a260b6b484a880cbb66fc473d19e37"
+    },
+    "module/common/dump.c": {
+     "path": "module/common/dump.c",
+     "blob": "280a14a6e060305ab895e26751495284f9659c21",
+     "sha256": "d2f01172aa011040c888c4fde4053ae98fe30868597a5e25d2502e89193935d1"
+    },
+    "module/common/wifi_hal_api.c": {
+     "path": "module/common/wifi_hal_api.c",
+     "blob": "e3ac05c46cc65ebeb8b56f83f8ceef243009a537",
+     "sha256": "2a832561a42745d28fb28879f698bd366a449227a3cd1fb7ab20d776a3b94b88"
+    },
+    "module/common/wlan_bow.c": {
+     "path": "module/common/wlan_bow.c",
+     "blob": "573a1e3a3bec95e12654748c7e7404a7c1aa19c6",
+     "sha256": "ca1d7b4ab8a373fa1c9df2c50bd14cc545795b969e51ff27d8d2174b5da93211"
+    },
+    "module/common/wlan_lib.c": {
+     "path": "module/common/wlan_lib.c",
+     "blob": "dd5158d0d934f145c831609b3203f09bbc15dd18",
+     "sha256": "610ced2c851bf33648d2fc2b04a4817617d931239fb17d7a7d333cf09916fcd1"
+    },
+    "module/common/wlan_oid.c": {
+     "path": "module/common/wlan_oid.c",
+     "blob": "e2b629d7ccd7031ca4d506c6ac8485692c5815aa",
+     "sha256": "2e93dae5df9d71efe227ff1d1c3ffef7145fe07a164a4bb11f7b67e7cc8dc577"
+    },
+    "module/common/wlan_p2p.c": {
+     "path": "module/common/wlan_p2p.c",
+     "blob": "4e06588c6cddc90ec4feec16f43a84804ad6eb20",
+     "sha256": "f06f8f5fb613bacf4f5ce2d17a55e5b1bc03fd3ea64e52781593ff620c768b3e"
+    },
+    "module/include/CFG_Wifi_File.h": {
+     "path": "module/include/CFG_Wifi_File.h",
+     "blob": "474a9ee6d904ff36bd92e720481da1b069700720",
+     "sha256": "57ce3d103ca4468119a691d73856c02ecb2fd5c9fde167208e33435f7b9745f2"
+    },
+    "module/include/chips/mt6632.h": {
+     "path": "module/include/chips/mt6632.h",
+     "blob": "8b29ee69d04fcb2b7ed17b142398f2d5e16efbd9",
+     "sha256": "387096fac544c06ac9228eaeb33a6c661c6f8d5cc5d77d59eaad133a9a407cc3"
+    },
+    "module/include/chips/mt7668.h": {
+     "path": "module/include/chips/mt7668.h",
+     "blob": "df8925161654f6c1c5fce683b2e8ca6e3d8c76ce",
+     "sha256": "a0dc04b0ab3c541f3ddab67042d4ef72d9fc9f38709d4fe5e21ef670067cfa86"
+    },
+    "module/include/config.h": {
+     "path": "module/include/config.h",
+     "blob": "a28539a9cfa801b8f2a41a2202595a7f517ce568",
+     "sha256": "f8e1d7302231ac2400c3096c67a8f04cf89784cc0f5031c3eedf6b36e136855b"
+    },
+    "module/include/debug.h": {
+     "path": "module/include/debug.h",
+     "blob": "f50fafacee31cc3c4e5d13aaa5b5dd14fd6f1c6b",
+     "sha256": "30b65a1ffe1fa94329abcff886aa5426a5739ecd75a99c71ca693565a797cb28"
+    },
+    "module/include/link.h": {
+     "path": "module/include/link.h",
+     "blob": "f206de832f78fcf0b94825147d3739a1af6a24cf",
+     "sha256": "de2f0b7d5ae28747cc54533fbf022335797fc50b88a9c911ec194f24d45ddb8c"
+    },
+    "module/include/mgmt/aa_fsm.h": {
+     "path": "module/include/mgmt/aa_fsm.h",
+     "blob": "3b7b074f857b6eda9eb461e1f5f6ed53cecb8f5a",
+     "sha256": "75ea227953c8e986f859dae78116f39b338f4e3ae880e9e631957fa698855429"
+    },
+    "module/include/mgmt/ais_fsm.h": {
+     "path": "module/include/mgmt/ais_fsm.h",
+     "blob": "2c534f8541971192ab94e5e19c50ae7126786a15",
+     "sha256": "f6f30ae91f60ac9caf287d46347793c3b26189485c883c292fdeef8ba671a85a"
+    },
+    "module/include/mgmt/assoc.h": {
+     "path": "module/include/mgmt/assoc.h",
+     "blob": "dec0f902d7e022f55858f14ac5feac54e7f2db50",
+     "sha256": "3482937cd9fa2ef2b84cb364147f649948cfc3a506bc20b62a56ea3990aee73e"
+    },
+    "module/include/mgmt/auth.h": {
+     "path": "module/include/mgmt/auth.h",
+     "blob": "164ca1cfa2c44b444130055b708995965a8c1ae3",
+     "sha256": "d3abc643e1eefa053077c981a9c4a6f528737d139745a63ab2fe8906a04fc42c"
+    },
+    "module/include/mgmt/bss.h": {
+     "path": "module/include/mgmt/bss.h",
+     "blob": "9e9b3f3cc3b93cd03797c4513414b6df229633d5",
+     "sha256": "fb03f3eef0378cfd75afa483f75f1363710b2ecb5343309d4531dd3210d32735"
+    },
+    "module/include/mgmt/cnm.h": {
+     "path": "module/include/mgmt/cnm.h",
+     "blob": "ea836868b1caf40e590e6c95a5f1bbb81014def8",
+     "sha256": "a1c6dcc67b76710694cc88a6cd7ea9fe361e9f0ecf0d069f3cdf1046f5f62ad2"
+    },
+    "module/include/mgmt/cnm_mem.h": {
+     "path": "module/include/mgmt/cnm_mem.h",
+     "blob": "6aefd4bd35d37ebafd0a2cb8be8b2ae2e331d037",
+     "sha256": "3dde224a5d2fdc0adcae44648b5bad05c127ac9b98df8f8aa41a35cfc516585e"
+    },
+    "module/include/mgmt/cnm_scan.h": {
+     "path": "module/include/mgmt/cnm_scan.h",
+     "blob": "ea2ad50193385e9f55fffc8baeb2a98e97720461",
+     "sha256": "036051d8c6e196051eb7ce426cacf8016aadffbed5ce6a589fb6b5bd1298bdd5"
+    },
+    "module/include/mgmt/cnm_timer.h": {
+     "path": "module/include/mgmt/cnm_timer.h",
+     "blob": "5770ab3870d136a199cb65b8b03da40f124e545f",
+     "sha256": "a1679e07c6ae06af24ded6eda2bd3efdbb17ab96344269417541e6558c2efe13"
+    },
+    "module/include/mgmt/hem_mbox.h": {
+     "path": "module/include/mgmt/hem_mbox.h",
+     "blob": "de8a7310f7aaa34ae28e1dcfcedf46f8d5cb18ae",
+     "sha256": "d893f3b08c4ce7ea8a75c5d165454e989657b4a3362a2735900ef4f3b126ea7e"
+    },
+    "module/include/mgmt/mib.h": {
+     "path": "module/include/mgmt/mib.h",
+     "blob": "3b1b2c67f894b450298c5b14374697b43c97273c",
+     "sha256": "862be470c3a88016edfb302a25bdbfb2df2e2e53fbcc56d813a434351f062492"
+    },
+    "module/include/mgmt/p2p_assoc.h": {
+     "path": "module/include/mgmt/p2p_assoc.h",
+     "blob": "8b4bff3fd38124c3b2b11ff8ecad1dc4aaf92e46",
+     "sha256": "43c66f6806c8ce9a903b924a264534742f2dbc8eae9746ba07be9fe1666acf39"
+    },
+    "module/include/mgmt/p2p_bss.h": {
+     "path": "module/include/mgmt/p2p_bss.h",
+     "blob": "0c8a35b762db1cf5d8aec70b8d916190cf92254a",
+     "sha256": "3d28d0f1366bacd66aa9dea97a690dc6202db130302e0efb8d1c60c6a97c5a23"
+    },
+    "module/include/mgmt/p2p_dev.h": {
+     "path": "module/include/mgmt/p2p_dev.h",
+     "blob": "cab90dcc8815977010f9b3db73e474fddb8a6dbe",
+     "sha256": "e66dbc9fc497b1561f629eb8fe5f2f6f69dd1c66bd4641c43ffe2edcf4923c39"
+    },
+    "module/include/mgmt/p2p_dev_state.h": {
+     "path": "module/include/mgmt/p2p_dev_state.h",
+     "blob": "2714907cb64d8e935fb4fc004053f6f6c2095224",
+     "sha256": "2a179f3c10b141b085fdaf502685e011be34edea5b1bd0bfca281f84ed1cff3a"
+    },
+    "module/include/mgmt/p2p_fsm.h": {
+     "path": "module/include/mgmt/p2p_fsm.h",
+     "blob": "206fd34438ffa4a8ea9dce1acd366671bb2de0de",
+     "sha256": "db79c039553622c05d48cce2480bcbf323659c6b06ed7a5d8350cec932b55aaa"
+    },
+    "module/include/mgmt/p2p_func.h": {
+     "path": "module/include/mgmt/p2p_func.h",
+     "blob": "51b310d69ec1ea509588474760c36584be22addc",
+     "sha256": "3ef283c742ae436b5d7aa303845b351066639d25736d677239980d6d8a8695fe"
+    },
+    "module/include/mgmt/p2p_ie.h": {
+     "path": "module/include/mgmt/p2p_ie.h",
+     "blob": "45be52298e67ee76c8e7fc65ca6170f72d931946",
+     "sha256": "5a9e213c0064e8443d3322c55f777fbac61601c907958136bcf07a7868db5915"
+    },
+    "module/include/mgmt/p2p_rlm.h": {
+     "path": "module/include/mgmt/p2p_rlm.h",
+     "blob": "1692fae91ea65467171c013b766e53421d1ebdb8",
+     "sha256": "8d2578a43706cd32071a7af1b8f84ae86037ac86f0202cd6aa51261e955c3060"
+    },
+    "module/include/mgmt/p2p_rlm_obss.h": {
+     "path": "module/include/mgmt/p2p_rlm_obss.h",
+     "blob": "9b7890642cfefeb96c6af9de81a2581dd37be8d0",
+     "sha256": "16a62621735ec97ca2fd06910b30ff55e71752ebc8bc8cd1c78fb055b39f1643"
+    },
+    "module/include/mgmt/p2p_role.h": {
+     "path": "module/include/mgmt/p2p_role.h",
+     "blob": "dbcab25f0f669db9bb7b5ca5b8a1ee5d630b58ca",
+     "sha256": "6de764cc85574109b52299c1c36a08e5b2a79d04530eb16e98bbb1d787fd7c9c"
+    },
+    "module/include/mgmt/p2p_role_state.h": {
+     "path": "module/include/mgmt/p2p_role_state.h",
+     "blob": "a6fad853186c195acb76b3573699386e5038e84b",
+     "sha256": "e4c6ddab02938d095a7856f85fdc323312927b0f7f4b4778e36053151481f2c3"
+    },
+    "module/include/mgmt/p2p_scan.h": {
+     "path": "module/include/mgmt/p2p_scan.h",
+     "blob": "4f2d2ead43d02228c970656c81cca35fef32b9f3",
+     "sha256": "7c720b8756f8cf099ad8d85929a3a0eaadd685ffe0d596ffd3a72bc4e6642400"
+    },
+    "module/include/mgmt/privacy.h": {
+     "path": "module/include/mgmt/privacy.h",
+     "blob": "977564fa963d46a7370acaae1e4e161e27a565b2",
+     "sha256": "7f7bf05fe06a1b697d59ad870bc72d8f3eb96848780704be70f0627f67105239"
+    },
+    "module/include/mgmt/rate.h": {
+     "path": "module/include/mgmt/rate.h",
+     "blob": "49ec193a67b0ea8478ae98a9dbd518440ba09060",
+     "sha256": "930505397a824eabd6263fdd454f180bf37699fce09cc8dcbc9c094cae78ae19"
+    },
+    "module/include/mgmt/rlm.h": {
+     "path": "module/include/mgmt/rlm.h",
+     "blob": "163bb3c64ce4d64b18e211d44b2eb7bf641efff7",
+     "sha256": "0529fcda82c257563b271aef734af7b456f0be70c4f17da4adf6b6a4ca861a09"
+    },
+    "module/include/mgmt/rlm_domain.h": {
+     "path": "module/include/mgmt/rlm_domain.h",
+     "blob": "df91076677398c276dca2405be46a927bd14eb56",
+     "sha256": "a69d1d62b46086aaf0f87d58e0a4c5c50b250546da84d9a4e833f24499285201"
+    },
+    "module/include/mgmt/rlm_obss.h": {
+     "path": "module/include/mgmt/rlm_obss.h",
+     "blob": "30790c0a665983967abc831825590121edd17e64",
+     "sha256": "dae7d060afa4de7d1b0bbe0a2877cf63636553b7e3a69406179b81cee5bee020"
+    },
+    "module/include/mgmt/rlm_protection.h": {
+     "path": "module/include/mgmt/rlm_protection.h",
+     "blob": "062dde0ebbfdcb3687612e67ecfd6069fd88ef84",
+     "sha256": "0834ac5be8bb8472452fdc13d658e9aa803e671ad508ae424801f6d1dd8a505d"
+    },
+    "module/include/mgmt/rlm_txpwr_init.h": {
+     "path": "module/include/mgmt/rlm_txpwr_init.h",
+     "blob": "e9e74b5629dd8f664bea41f488a1434607624d1d",
+     "sha256": "c16349813af89439405605ad29693dc15dc217d10b96f48f89a5be85c0a09d2c"
+    },
+    "module/include/mgmt/rsn.h": {
+     "path": "module/include/mgmt/rsn.h",
+     "blob": "f3f0584a42a764c19b261e1cb442ac4625683618",
+     "sha256": "63d39d297e903f2dbb28c8b4739e7c4823773dae5f4aacc0c81e33b57c3d9c36"
+    },
+    "module/include/mgmt/scan.h": {
+     "path": "module/include/mgmt/scan.h",
+     "blob": "b2addbce82bd332cc1a2cbb124560441c116fad9",
+     "sha256": "2e8a8f57f4cc55b49e2e7802936c84c3b028c930125b75ec3f47c9000e3c75a9"
+    },
+    "module/include/mgmt/swcr.h": {
+     "path": "module/include/mgmt/swcr.h",
+     "blob": "fab954321fed33c3679ab2bfbf84cae0b71caaf1",
+     "sha256": "5d079b682e8419ed0f9f6d6aae5e489e682bf99aa6ea356f14ab0f099eb163eb"
+    },
+    "module/include/mgmt/tdls.h": {
+     "path": "module/include/mgmt/tdls.h",
+     "blob": "1208ec2f0d4f3cea675d3d77220dfc56051836cb",
+     "sha256": "e9df534075341db4bf75b56fc25dbdcf79bcd2071d3224c8881c94a15b9b2909"
+    },
+    "module/include/mgmt/wlan_typedef.h": {
+     "path": "module/include/mgmt/wlan_typedef.h",
+     "blob": "e8d27a78ee1176b6ec09463fcb01ba1baa33c84a",
+     "sha256": "59f0b5ad1ff68f15db229ed4b50a8538e509fe158bca65d575c0c29eb7d8fe67"
+    },
+    "module/include/nic/adapter.h": {
+     "path": "module/include/nic/adapter.h",
+     "blob": "2d35cdb50e34f1fb942f4c3cabaf93103a67c72e",
+     "sha256": "10054fefc17f43d68068b2e371a34460e6cf64da8a91d1fdcbcd552ac49b9ae2"
+    },
+    "module/include/nic/bow.h": {
+     "path": "module/include/nic/bow.h",
+     "blob": "bdd798c0842cb7cb570e7264d1f005904621bea1",
+     "sha256": "c28c185cd2c5220f315848d391d5156505bd069fca54c13da08c6d96ff0ef0d2"
+    },
+    "module/include/nic/cmd_buf.h": {
+     "path": "module/include/nic/cmd_buf.h",
+     "blob": "cde5c88e42d942fbceeaa5fab9ee088a2fd410b3",
+     "sha256": "a1478cd4183ca01674d7228e17b3eb08d316e7bed0a31eb89672a705df258fa5"
+    },
+    "module/include/nic/hal.h": {
+     "path": "module/include/nic/hal.h",
+     "blob": "b823f29d09d753335a73b87e4190041423db98d3",
+     "sha256": "d13f44c10876165b24b2202a2a187174a55107bee26ca6dbdf64aa177770f463"
+    },
+    "module/include/nic/hif_rx.h": {
+     "path": "module/include/nic/hif_rx.h",
+     "blob": "fdc1f9920137443ccf90bf6c4ba7de97e73819d8",
+     "sha256": "7d9d3da0ce1bc9969a6565dce00853b40e5f1349507e4f40934cae04ae5393cd"
+    },
+    "module/include/nic/hif_tx.h": {
+     "path": "module/include/nic/hif_tx.h",
+     "blob": "29f73e8b5f7ae6e43bb50cd459f3557d2887b967",
+     "sha256": "b23b7397e7020e565da9ad4cf1ded5d65dfa353a148c5475f9dc7719e5443dfc"
+    },
+    "module/include/nic/mac.h": {
+     "path": "module/include/nic/mac.h",
+     "blob": "336622d5e7242c484712420e4d09a54ec200f151",
+     "sha256": "d498f0ea7dadb3b655b4134daa4d8c504482f453a55829ddec5bdcc55f4f3bd4"
+    },
+    "module/include/nic/mt66xx_reg.h": {
+     "path": "module/include/nic/mt66xx_reg.h",
+     "blob": "ca7419743af6bee1c86d810d272e0401c7911241",
+     "sha256": "66878347c02f496581dbe79957ce4a1e575b05075b3ca106fdea877a4cb9d4b1"
+    },
+    "module/include/nic/nic.h": {
+     "path": "module/include/nic/nic.h",
+     "blob": "8332c4985b07f8c7be67ff8c925abbc8d681f52c",
+     "sha256": "b278e72d33d680cf2d85d04570e38376e71229a62473e4a31ebd0b94c9ce5638"
+    },
+    "module/include/nic/nic_rate.h": {
+     "path": "module/include/nic/nic_rate.h",
+     "blob": "881d845f021c53d10ffb7af5cdc239abac87fd6f",
+     "sha256": "53066ae38bd1cb56783c4092049d68b11256ffaf2aea1b6b5d8a8764f79ed078"
+    },
+    "module/include/nic/nic_rx.h": {
+     "path": "module/include/nic/nic_rx.h",
+     "blob": "80db9c6a2eeef655a860a0ac5de38b0876990582",
+     "sha256": "c2d9808a77ca1417572f5d08a9dbd391a201a33c0c54ffd5559fb446e75d4e34"
+    },
+    "module/include/nic/nic_tx.h": {
+     "path": "module/include/nic/nic_tx.h",
+     "blob": "e9f00f36b0aeb7cc42fe525ff6d5cec77f0e467f",
+     "sha256": "9815e3e89f2d929fdd98bab6939130e8ba256d92dd3a191a4f6a297826d6e66d"
+    },
+    "module/include/nic/nic_umac.h": {
+     "path": "module/include/nic/nic_umac.h",
+     "blob": "fc4e2e398830f76f8ef1f6e38b9d3f54881fd17f",
+     "sha256": "0a6fa8a359a2f825e3e83873c21ec889608ba306b894e00c58a13d7192cc135c"
+    },
+    "module/include/nic/p2p.h": {
+     "path": "module/include/nic/p2p.h",
+     "blob": "7370303151ab548da970e052d7e88d8a67619d09",
+     "sha256": "bf94513e8faa942225b9dc20a63f23c545f4493d248a174e4d642e33421aabb1"
+    },
+    "module/include/nic/p2p_cmd_buf.h": {
+     "path": "module/include/nic/p2p_cmd_buf.h",
+     "blob": "3d435f51c69332e27af440b09963130c1a5bad1c",
+     "sha256": "909557440acda596cf2775523454b4027d0bd9034087cd58fc0eeaf43ae7239a"
+    },
+    "module/include/nic/p2p_mac.h": {
+     "path": "module/include/nic/p2p_mac.h",
+     "blob": "92260d5610c2935c056ab4637050f4db6861113b",
+     "sha256": "67799dfa6830f03b4e7e2766eace590565b95c233eaae57d5929b7956833941a"
+    },
+    "module/include/nic/p2p_nic.h": {
+     "path": "module/include/nic/p2p_nic.h",
+     "blob": "cb168e0797964c97085caec239b4d7c646ef2636",
+     "sha256": "fc0383b2d777b0afd89eb5577d2e3b0a6f39debd0f819cbc8768a1b6fc7bc05b"
+    },
+    "module/include/nic/p2p_nic_cmd_event.h": {
+     "path": "module/include/nic/p2p_nic_cmd_event.h",
+     "blob": "98f827e388c12a81dea73ea7d3d4f82073e80c5e",
+     "sha256": "15708993d656795c5f5e6ecfbaaece52ff815262e88a22235fb065bae39e8799"
+    },
+    "module/include/nic/que_mgt.h": {
+     "path": "module/include/nic/que_mgt.h",
+     "blob": "5cad78080bf29616f2e4f854d944a9ded6f12a26",
+     "sha256": "285bb5fd8fa894fe491a5a52858f5d3fa219be4060e70cb94c83d42fe349ae9f"
+    },
+    "module/include/nic/wlan_def.h": {
+     "path": "module/include/nic/wlan_def.h",
+     "blob": "ea1e3e8c68107ef349a5247545ec56592d2b5b73",
+     "sha256": "e550f8cbb4692d828b5068bab41090c5210e303bcd04d3401a812c15594d8c5a"
+    },
+    "module/include/nic_cmd_event.h": {
+     "path": "module/include/nic_cmd_event.h",
+     "blob": "f795844eb8af6489a4b5b3b74ab209c04a5bcbc4",
+     "sha256": "356fa67421f509b9dae0387d868443c8723d4f913850dc0a5d842ed35df285f4"
+    },
+    "module/include/nic_init_cmd_event.h": {
+     "path": "module/include/nic_init_cmd_event.h",
+     "blob": "6e6b541c5f46a21bdfa91c1fc57216e646d4bc08",
+     "sha256": "3955ef0200913566d75a47843986bf844f77cfc1b1c09f7107a6e8cd03bb2e44"
+    },
+    "module/include/p2p_typedef.h": {
+     "path": "module/include/p2p_typedef.h",
+     "blob": "95b734895b8b79aa7f2bfab3ee251879aaf19d4f",
+     "sha256": "de019cd4c25ca1ce2bd1265c3c9aae9f5eea2faa0544c1911110c41a956dddb4"
+    },
+    "module/include/precomp.h": {
+     "path": "module/include/precomp.h",
+     "blob": "6ea3f9057a4797f8d20450866c40b1ef7ebb41cc",
+     "sha256": "e8af433a9b6c092b662958679683d7d1dedac5e747fa48eb3a780c70bdd71fcb"
+    },
+    "module/include/pwr_mgt.h": {
+     "path": "module/include/pwr_mgt.h",
+     "blob": "19f588659b9220c8ef20426c678b24444788aa49",
+     "sha256": "e5ff8efaae85aace871b239ef6a3807acb284e29d09d7a9c32f0b8d8ee25e9b1"
+    },
+    "module/include/queue.h": {
+     "path": "module/include/queue.h",
+     "blob": "a91e9f2dab783d9e40acd0b922afc41df09947b6",
+     "sha256": "50e54655aaedbef2b6ace068cba91a2edaf2653b987f64608e555ae5e23a7872"
+    },
+    "module/include/rftest.h": {
+     "path": "module/include/rftest.h",
+     "blob": "4b785fffc36e9f7aa485a24bbcead5b07a39bc7a",
+     "sha256": "88cc276d84e786efbafb1e1a7ca10c41fb4532f2a21bf8f5f459e6c8d80ae4f9"
+    },
+    "module/include/typedef.h": {
+     "path": "module/include/typedef.h",
+     "blob": "824e9a13bb8a64c15435ee56cab60dbd40defd3f",
+     "sha256": "4bca6a3f2eff516055b7fcb64b32d3adf6a5d5fb2ccfcfcaadf7317582a6b825"
+    },
+    "module/include/wifi_hal_api.h": {
+     "path": "module/include/wifi_hal_api.h",
+     "blob": "c8628ad9c35b80c2c1e0a7942fdf480241bdeb15",
+     "sha256": "4f6bc67b457a6daff15bd62a4dac84fa64c809481fb76ee3ca237e7843e3db8c"
+    },
+    "module/include/wlan_bow.h": {
+     "path": "module/include/wlan_bow.h",
+     "blob": "e2a34861306a7d23a65e8a658d3a0ec7e978dd43",
+     "sha256": "c590fa13d98aa236617c16873b9517a0454790ecd882fad7e1fbb852622377fe"
+    },
+    "module/include/wlan_lib.h": {
+     "path": "module/include/wlan_lib.h",
+     "blob": "48412b33d3bfa6a61fb8e866f532352a6c9f230d",
+     "sha256": "7938d3e00077ba8bbec3ebca63e2f91928c9c4ea7a7e256d16f0f2ce3a659378"
+    },
+    "module/include/wlan_oid.h": {
+     "path": "module/include/wlan_oid.h",
+     "blob": "c7037b4a12f97d166c87692f84e93fc3415f1e79",
+     "sha256": "441ca0320ec1127c352268cfd2299da9eea8e42aa2b23ee0f13b5b33b9ebb7eb"
+    },
+    "module/include/wlan_p2p.h": {
+     "path": "module/include/wlan_p2p.h",
+     "blob": "b684e9552a35ef555e9ed036571aa3e046431733",
+     "sha256": "bc03f8eb60b832efb361419383040cb8813eb2089f98c5013908b99e949c7e11"
+    },
+    "module/mgmt/aaa_fsm.c": {
+     "path": "module/mgmt/aaa_fsm.c",
+     "blob": "5ef69bfbc44ca22c5673db4add7c87431c190819",
+     "sha256": "4f7f377ebd0a2f077ce296a0b857edd898d03503ec824533ccc5a58f6b39ae5f"
+    },
+    "module/mgmt/ais_fsm.c": {
+     "path": "module/mgmt/ais_fsm.c",
+     "blob": "8a186b33c375bd7ff87dc6af36c83f2d0ff718b7",
+     "sha256": "4a408b7512f9f1f28c0cb944ed8dd4fc58468ab5a34d7ce926416d13ad65221d"
+    },
+    "module/mgmt/assoc.c": {
+     "path": "module/mgmt/assoc.c",
+     "blob": "1f90da25b76b4033c52a7745ddfaaf9219676d17",
+     "sha256": "f175ea27cbd20fc33247cc076c8b82ef16866eedcf3f13ea5d3989caa238dedb"
+    },
+    "module/mgmt/auth.c": {
+     "path": "module/mgmt/auth.c",
+     "blob": "c3872673243d649e513443feebecab27b5f952b9",
+     "sha256": "1ad91623ebd63e183f720651fa680fa8cdcb35466bc387fb9ccec6703c5393a5"
+    },
+    "module/mgmt/bss.c": {
+     "path": "module/mgmt/bss.c",
+     "blob": "98ad9974c3021b0f6a63b0640e86a488ad9a2c70",
+     "sha256": "88d61a4193abd1b0171fa11cf6c83ee8bedbb6d835475a86002069f55b0d5c94"
+    },
+    "module/mgmt/cnm.c": {
+     "path": "module/mgmt/cnm.c",
+     "blob": "a1e50010d1d707193a3c233c3ea625d14125e715",
+     "sha256": "fc686b89dc7a3d0a8d9db02670e9d9555ca04ee4d1f4bfd44e1f42652a99e22f"
+    },
+    "module/mgmt/cnm_mem.c": {
+     "path": "module/mgmt/cnm_mem.c",
+     "blob": "1c006dfef04ba0fcedd4ee301df1623e00e81d55",
+     "sha256": "4b55ffd708bb4fe4291dc5b63dd698ca723a4de8c84ca11ba482ef0999564e83"
+    },
+    "module/mgmt/cnm_timer.c": {
+     "path": "module/mgmt/cnm_timer.c",
+     "blob": "c46ecfffdb7d78616b9532f4e62ad0021e2d6147",
+     "sha256": "6e9f54f0a21d8b63f680a14b8e29e855c20a5d86937c633e1ffe98a80cdad468"
+    },
+    "module/mgmt/hem_mbox.c": {
+     "path": "module/mgmt/hem_mbox.c",
+     "blob": "199ad79d5ae192e350beee0c7fcd0c5c819dad11",
+     "sha256": "3b90b13a6e74ac2a69d9af5be690e6e04b02ea0598650b5b6b32acad29ba1f79"
+    },
+    "module/mgmt/hs20.c": {
+     "path": "module/mgmt/hs20.c",
+     "blob": "2b479597f9e21fbb9109d0a2073ca0b78cb8c186",
+     "sha256": "0e3e4f112e93b66250a01f66b08ae58f99bcafc07b14ad5ca4058b905a2fad5d"
+    },
+    "module/mgmt/mib.c": {
+     "path": "module/mgmt/mib.c",
+     "blob": "726736c3d05ce1c265ce916139e351f65a0541d5",
+     "sha256": "d078e96f6968e45e7dfc41ab12bda2451a19f3bae480440fb8bd7e58952a34f0"
+    },
+    "module/mgmt/p2p_assoc.c": {
+     "path": "module/mgmt/p2p_assoc.c",
+     "blob": "d3a352c4ab41cdf51e35890a7d220b7a51e3c600",
+     "sha256": "a78af2cde6d426dc4f82be7454429d008b9756856780f7b73e74f0dfc641fd41"
+    },
+    "module/mgmt/p2p_bss.c": {
+     "path": "module/mgmt/p2p_bss.c",
+     "blob": "e990db9ff79eefc41c6de07a0c6318bd952142d3",
+     "sha256": "805761bfea65f0692783e0ea547256fcdb16f09c859085d888dbd779b086de8b"
+    },
+    "module/mgmt/p2p_dev_fsm.c": {
+     "path": "module/mgmt/p2p_dev_fsm.c",
+     "blob": "aefdee275d7a1851c1fad797f5f86d44b4ff4c37",
+     "sha256": "a1e51293d70684e7c01fc0981ce0a4c107e692655e45773c5b1442d5a9c324fc"
+    },
+    "module/mgmt/p2p_dev_state.c": {
+     "path": "module/mgmt/p2p_dev_state.c",
+     "blob": "8e92f71fff52a048b1512ceacdd65a179331d212",
+     "sha256": "57773876fbe0dbc4ac1395176498f02e55d202e461b4f0cee48385ff7e9c1090"
+    },
+    "module/mgmt/p2p_fsm.c": {
+     "path": "module/mgmt/p2p_fsm.c",
+     "blob": "4d25d72856971eff62142e68f7c7990fd2026c62",
+     "sha256": "f3b7ae85cad3944d10b3e7757fb33350f5b82e05666985447fd11944dc21f9d4"
+    },
+    "module/mgmt/p2p_func.c": {
+     "path": "module/mgmt/p2p_func.c",
+     "blob": "3d3e46f490e958c31514476ca02174305681a0c4",
+     "sha256": "b7f8c8003b6ac9dbb5cd40503450f3156158e84545586785b6e6ec53cb1c6684"
+    },
+    "module/mgmt/p2p_ie.c": {
+     "path": "module/mgmt/p2p_ie.c",
+     "blob": "a89a89ea7fcba265045ad4318d700d5e1df1bb77",
+     "sha256": "bcd7fed1581e67546b22b0b5e8047bd95e08e16d3f49ef8e6d2ee4c44a36932f"
+    },
+    "module/mgmt/p2p_rlm.c": {
+     "path": "module/mgmt/p2p_rlm.c",
+     "blob": "2c6dac023a4389c5b7504c123bb2273b130377f6",
+     "sha256": "09b7933bfb2546cbf93ce40e46ace260d36243b177e1176bf905e9d546a1b4a1"
+    },
+    "module/mgmt/p2p_rlm_obss.c": {
+     "path": "module/mgmt/p2p_rlm_obss.c",
+     "blob": "8068cb7fff0258126f7e923e0ac6dc1b2e755c4a",
+     "sha256": "ba6929206ce268f9df1e769222ce1560355be0a4240c3f5cbb8bdab51f0dd944"
+    },
+    "module/mgmt/p2p_role_fsm.c": {
+     "path": "module/mgmt/p2p_role_fsm.c",
+     "blob": "6771593c5b402f29a2f248409093ece0718a4cba",
+     "sha256": "8692a34c67cfe6ac52182736dab8173afd64e59c10ff437fb421bc802c79e07e"
+    },
+    "module/mgmt/p2p_role_state.c": {
+     "path": "module/mgmt/p2p_role_state.c",
+     "blob": "185baa9cce3974e74cde8660d4d524a6c33fcc88",
+     "sha256": "13ae1cf24e9bd0e02dbe412bd0b4882ddf770f53cb620555f24b2006f78023df"
+    },
+    "module/mgmt/p2p_scan.c": {
+     "path": "module/mgmt/p2p_scan.c",
+     "blob": "835dd4f0c4662ec82655c32e2631fc5f28369612",
+     "sha256": "f643bb123ad56a100ffe3822b1940a39ad196854427be293787faa6ced8688c7"
+    },
+    "module/mgmt/privacy.c": {
+     "path": "module/mgmt/privacy.c",
+     "blob": "e9185bfc979f731323f68ad328502cd00a0fc1e6",
+     "sha256": "9dc1f7d34a22f616df2b826d9d684b0b8c307d35811eb58c6e715d0a189c70b8"
+    },
+    "module/mgmt/rate.c": {
+     "path": "module/mgmt/rate.c",
+     "blob": "f5e2e79851b9ea9ed7038dc50d4fb722e3a23888",
+     "sha256": "3d000f0ddf079e2da57941b888188443715d6999e8a3f09b3537559ffc8b401e"
+    },
+    "module/mgmt/reg_rule.c": {
+     "path": "module/mgmt/reg_rule.c",
+     "blob": "17b4c18110e4dcc3f70ab6aa3ca910c7ee179e33",
+     "sha256": "8cfc211f945d4b6dd59d045641cc1acf1899fc62cd1de90622fbe6ac69f7fa28"
+    },
+    "module/mgmt/rlm.c": {
+     "path": "module/mgmt/rlm.c",
+     "blob": "be7046f658a3c301fd2ea0d87bec86795a8069b1",
+     "sha256": "ed1ff817417e04ee92b85351ff27e7c89dfc449481c8d1d71995c6a3e52bc5d9"
+    },
+    "module/mgmt/rlm_domain.c": {
+     "path": "module/mgmt/rlm_domain.c",
+     "blob": "b89bb04c571b021865838c28e52bdbfd9d10c022",
+     "sha256": "daa74b1ace56cb72dfb066e3835c2da9458fad8ea3852ee235e0f2c8603d55dc"
+    },
+    "module/mgmt/rlm_obss.c": {
+     "path": "module/mgmt/rlm_obss.c",
+     "blob": "aa9b047502e3cb18e1c41949bb211f000bea3007",
+     "sha256": "75c8199bbb69187ce9095715c14c7a1d6760c37b264daedc6349f2f780e49be8"
+    },
+    "module/mgmt/rlm_protection.c": {
+     "path": "module/mgmt/rlm_protection.c",
+     "blob": "4bcbe5c3528f5a2e0919f4484d95baed6b28bca3",
+     "sha256": "baa579f056d7c87c7c6316f3bd1af4b0c53db5a4f01114dd70c670d9d08a7764"
+    },
+    "module/mgmt/roaming_fsm.c": {
+     "path": "module/mgmt/roaming_fsm.c",
+     "blob": "ebe43c7cc970f33edd2aa7c200b75e19fee64a99",
+     "sha256": "7868732b1d0b37f9eb0d51ed963495baa6e50428bd7dacafad85327b04af4d32"
+    },
+    "module/mgmt/rsn.c": {
+     "path": "module/mgmt/rsn.c",
+     "blob": "735f4ea8b16c4f84b15bb2fcbc676e88a6d87546",
+     "sha256": "cd1bf16ed328e888284049175389d8d9fb26dca5d7a185b2a0a4f50ae93542d5"
+    },
+    "module/mgmt/saa_fsm.c": {
+     "path": "module/mgmt/saa_fsm.c",
+     "blob": "2a15599aa254f6d4c72fe1f5205ff7dcbc556c99",
+     "sha256": "9c1045e5b77e96c8ba4106d2663dcce052a8ddcec9366eb24a10a0e2b39c2739"
+    },
+    "module/mgmt/scan.c": {
+     "path": "module/mgmt/scan.c",
+     "blob": "eeca4290994e942941438d09061cce16803d7c52",
+     "sha256": "f95c0d950c4f423261be085f09fcd62b0bf53206ba67aa098c6d53665a3e45c9"
+    },
+    "module/mgmt/scan_fsm.c": {
+     "path": "module/mgmt/scan_fsm.c",
+     "blob": "48b1b394453c7b000313c826d5f8868586dabe37",
+     "sha256": "fbdd20c41819238050ecd1906d41ec91117a82bae44306d8a870ff1f607af77d"
+    },
+    "module/mgmt/swcr.c": {
+     "path": "module/mgmt/swcr.c",
+     "blob": "f591d9fcd5633a3c62b319c10bb8c483cf05e6e0",
+     "sha256": "06684f504bbb5bb43a0deb4b84e68ee9cc4435ab0ca49dadca0db25e26be7193"
+    },
+    "module/mgmt/tdls.c": {
+     "path": "module/mgmt/tdls.c",
+     "blob": "25d93febc41ec8a5387e236df00ab5ce683e2e1e",
+     "sha256": "bb56f3f7076bb3a6ff0fe76c77f361a8c2b1e96a1d3566f9a0f290727459adfe"
+    },
+    "module/mgmt/tkip_mic.c": {
+     "path": "module/mgmt/tkip_mic.c",
+     "blob": "3b2729bc02ca27de25ee2014178acbe26f14493f",
+     "sha256": "13cc109b54592f9559ac8b99801d1a4ed11b5c90d7c620a53c11e1e8bed87124"
+    },
+    "module/mgmt/wapi.c": {
+     "path": "module/mgmt/wapi.c",
+     "blob": "fbbb3088284f4237b7171b3096b3a029af78d213",
+     "sha256": "114da2aa242a1f906a063a3acf0fbd8b7dbacad9c5b7797ffaca4d57a675d0ba"
+    },
+    "module/mgmt/wnm.c": {
+     "path": "module/mgmt/wnm.c",
+     "blob": "1582fe4abd23500d14e89db943d89a04ea0f166c",
+     "sha256": "7281eceac04ee4e5e9bd1810cc39abafc4289b843301ee2ad6397be95dab4a75"
+    },
+    "module/nic/cmd_buf.c": {
+     "path": "module/nic/cmd_buf.c",
+     "blob": "e6365a4cc578473385f1497fc699653545973f3c",
+     "sha256": "ef3da91d617118f21dcefca56e3e405dc1c3b1187b8c128205ce5997353f7b65"
+    },
+    "module/nic/nic.c": {
+     "path": "module/nic/nic.c",
+     "blob": "4227048b1d13ef124d55ad83b7935aed523e5111",
+     "sha256": "2c42abac5e422ff4e09ff89d1e27b32de66bc2f444fea2a23469cb445ee0df98"
+    },
+    "module/nic/nic_cmd_event.c": {
+     "path": "module/nic/nic_cmd_event.c",
+     "blob": "d095256f0f28a225deed4679f156b57395c91304",
+     "sha256": "4cea2b1b149fb27dcbed397598540c436942d24b297f18dcf61ff649aeaec433"
+    },
+    "module/nic/nic_pwr_mgt.c": {
+     "path": "module/nic/nic_pwr_mgt.c",
+     "blob": "f1f663deee0a21004fac1126f05ab2f7f816b2cb",
+     "sha256": "e02ca63aba35cd21b29f27aff548371a6dcf963d0d5b8c2bbb9411dca1df809a"
+    },
+    "module/nic/nic_rate.c": {
+     "path": "module/nic/nic_rate.c",
+     "blob": "938a3edafcf860b00046eaef2e12babccae39ebd",
+     "sha256": "2eaaf9ff90619855ce62f2df3e1e595f0279f698bd5fa34f10e84c0392ae9170"
+    },
+    "module/nic/nic_rx.c": {
+     "path": "module/nic/nic_rx.c",
+     "blob": "411ddff84fe83f4338204b39f84197837c1f3aad",
+     "sha256": "eba08d6180780882ef70781f5b38a90f70fab15547f6fbaa71038eb95cdcc8ed"
+    },
+    "module/nic/nic_tx.c": {
+     "path": "module/nic/nic_tx.c",
+     "blob": "675a2451ec90b60cab71e99d767175dfb20387b5",
+     "sha256": "06b352c157a830d719dfe0d6926d18b024ca95da5e2fe4186629ab866e0769e1"
+    },
+    "module/nic/nic_umac.c": {
+     "path": "module/nic/nic_umac.c",
+     "blob": "5ddfda3d355c9aee5c6a6f9c58692e03051eac2d",
+     "sha256": "20708e9d906395c47ae77718765777bc7e9dfe8bd61415de0fd76cf206420d68"
+    },
+    "module/nic/p2p_nic.c": {
+     "path": "module/nic/p2p_nic.c",
+     "blob": "5fd0a3e3cd4d271c83238343695da124b7112177",
+     "sha256": "7970d03fe7d29d915b79f8252582fc6ca4dc57d1f72d2c433afd5274f715f282"
+    },
+    "module/nic/que_mgt.c": {
+     "path": "module/nic/que_mgt.c",
+     "blob": "5d9449a04e8cf3222b7c2117c553a47e3412f2b8",
+     "sha256": "d0f25ca076c547e1d5735be1a12ec1bea0b282368304d98679c84a26804c23ea"
+    },
+    "module/os/linux/gl_ate_agent.c": {
+     "path": "module/os/linux/gl_ate_agent.c",
+     "blob": "43ade6635d6d29b96e430aab5aed922ab20a15d4",
+     "sha256": "39b770dfa8adcf1854de357e083e919680016b0a8f8e0c3b0eaaa2c17728ffb0"
+    },
+    "module/os/linux/gl_bow.c": {
+     "path": "module/os/linux/gl_bow.c",
+     "blob": "a708472834fc22811406e060cd36810e2e68f99f",
+     "sha256": "4df9d143103212b0bfb856a2746291847f45ce8fcb2425f64b9d19e5cd7b6a8c"
+    },
+    "module/os/linux/gl_cfg80211.c": {
+     "path": "module/os/linux/gl_cfg80211.c",
+     "blob": "cb4ff99fa42204c4ca64874d32b65ec5e4364112",
+     "sha256": "b83d5de08d8e399ff1a94516c23b8e5ccd71c3d9bad1f591f4fabdc06f616c68"
+    },
+    "module/os/linux/gl_hook_api.c": {
+     "path": "module/os/linux/gl_hook_api.c",
+     "blob": "ba822801f66f91409082c2646d1996a163ae3788",
+     "sha256": "81c59dc9b54ee25e9ba17d31ae52b715015f79f044b71d8b70f05cebb48b1fa6"
+    },
+    "module/os/linux/gl_init.c": {
+     "path": "module/os/linux/gl_init.c",
+     "blob": "02147ad60f12eb001d4b6b5907ef8a730c2fd96b",
+     "sha256": "a0171d2c1a47e99044f83e2990bb0d778027461551385930f9502240e68e7460"
+    },
+    "module/os/linux/gl_kal.c": {
+     "path": "module/os/linux/gl_kal.c",
+     "blob": "e500285fd4aba9e15de41d8da17836abfeffb697",
+     "sha256": "961d4ca840e7125d04ad45350ee7ddcd3c5eb9a4db060e5f85e8f6b70ee55728"
+    },
+    "module/os/linux/gl_p2p.c": {
+     "path": "module/os/linux/gl_p2p.c",
+     "blob": "ea3fed8e7042f6f13824cfac9e7d0da09d87a258",
+     "sha256": "7d1a849cb9ab80de0dad07344d4ff7bccd8e2fe6d7c803b69755c72f3f7aee76"
+    },
+    "module/os/linux/gl_p2p_cfg80211.c": {
+     "path": "module/os/linux/gl_p2p_cfg80211.c",
+     "blob": "7ee79df89304a94f66913138d9d91c8f61a954f3",
+     "sha256": "0123cae6ebdd2683d273c8ed9244326fdd2ad37a1f2a7aacb9804f3523a205d7"
+    },
+    "module/os/linux/gl_p2p_init.c": {
+     "path": "module/os/linux/gl_p2p_init.c",
+     "blob": "33f832be6790f689b88420139d031b974193f48b",
+     "sha256": "b84d749d1ef07e5267a13d09c9dad19543ac757baf5aa106e8ce34536ab186e5"
+    },
+    "module/os/linux/gl_p2p_kal.c": {
+     "path": "module/os/linux/gl_p2p_kal.c",
+     "blob": "b54b1f4ca2506cb71dcc589596a4ff734c2a71a6",
+     "sha256": "33ec9995f42d82cf0dde524d8e425365bd1834ac4f814c5366cae64ec4275253"
+    },
+    "module/os/linux/gl_proc.c": {
+     "path": "module/os/linux/gl_proc.c",
+     "blob": "6f106185b2f69e39c350bc440c3ca62704bfc2cc",
+     "sha256": "167505c03fa1375aeabdea385023014f6ed12578dc3e30a8d6da03576bb27105"
+    },
+    "module/os/linux/gl_qa_agent.c": {
+     "path": "module/os/linux/gl_qa_agent.c",
+     "blob": "a060aebb8e321dd7d953a8a1d8f35b04cf572bd2",
+     "sha256": "cee3eaad9ea4340727a20c5497970d17ed90ad7e2729ad1bb4e79cd85290f898"
+    },
+    "module/os/linux/gl_rst.c": {
+     "path": "module/os/linux/gl_rst.c",
+     "blob": "9add36268a0f6790a81a686f27f78d04ad1f79e8",
+     "sha256": "6f0e77eaca4dc124e3a2d45e2c48e1192af8de6f6ec796c5094285b5fe95746d"
+    },
+    "module/os/linux/gl_vendor.c": {
+     "path": "module/os/linux/gl_vendor.c",
+     "blob": "fe2be436f426cd5bfab2e354ac698e8d518f8f5f",
+     "sha256": "14a05918db6217e7256652034541c7bd784711c39ce026c2b2076e6a76f8421b"
+    },
+    "module/os/linux/gl_wext.c": {
+     "path": "module/os/linux/gl_wext.c",
+     "blob": "83159ccf433ad170eb0ffd1f5db7328f2089b90d",
+     "sha256": "e71e4353b6347489725ee75dc95da91af583679f1a7c5eb599b5875ac2043c51"
+    },
+    "module/os/linux/gl_wext_priv.c": {
+     "path": "module/os/linux/gl_wext_priv.c",
+     "blob": "c8b69e171cde197a8a1939757b11770fb4fef57e",
+     "sha256": "4ca0d3a00fcb167413fdbab72743985f05665279b9b066b9ebb438f99fe1d1e1"
+    },
+    "module/os/linux/hif/sdio/arm.c": {
+     "path": "module/os/linux/hif/sdio/arm.c",
+     "blob": "7cbc34e29cdef6751cc0d82f42af191370f61e46",
+     "sha256": "f19ea593d9bc40af788adc4bee566bdedcc16d4fcec7a71e2198e6e9fae177b0"
+    },
+    "module/os/linux/hif/sdio/hal_api.c": {
+     "path": "module/os/linux/hif/sdio/hal_api.c",
+     "blob": "d4cf387f5f17173097bfcfa0f98f46c874964bb0",
+     "sha256": "c9c77a9983952b55132b72de8df8586bc5db3539bc9a9449967d79640989effe"
+    },
+    "module/os/linux/hif/sdio/include/hif.h": {
+     "path": "module/os/linux/hif/sdio/include/hif.h",
+     "blob": "704af9c8128ddef215e8d01190107f5beaf27933",
+     "sha256": "313b81fa092a9abe59ea76e5685326d3d775eb09c55fd0e546013f9291b30cd4"
+    },
+    "module/os/linux/hif/sdio/sdio.c": {
+     "path": "module/os/linux/hif/sdio/sdio.c",
+     "blob": "512c138e683af381c940ded19b511ac2d83f32e4",
+     "sha256": "481f1123d6b692b237867c7fb69c1d86793560e318e6d532037aed15528cb18b"
+    },
+    "module/os/linux/hif/sdio/sdio_test_driver_core.c": {
+     "path": "module/os/linux/hif/sdio/sdio_test_driver_core.c",
+     "blob": "996f4137b3f9f2e724248c3ab717a49300ded40b",
+     "sha256": "ad560e7d57b67b3d200ca36a58a493a14211fa7a1c2871775df38773426e11b6"
+    },
+    "module/os/linux/hif/sdio/sdio_test_driver_ops.c": {
+     "path": "module/os/linux/hif/sdio/sdio_test_driver_ops.c",
+     "blob": "82dfd14889c71dfd0eaf54502cd3b4054b5fa47c",
+     "sha256": "91e68bdb07406f4438208d2714b0abdc158d63f4a0a19f1f3ad7424ffac5b4bc"
+    },
+    "module/os/linux/include/amazon_wifi_temp_sensor.h": {
+     "path": "module/os/linux/include/amazon_wifi_temp_sensor.h",
+     "blob": "cc35dd8d88eda097e196ac7af68835b1b379739a",
+     "sha256": "51eb2e4cb4f0a3cd5e7f210a89dda6bcc06500d6723b8ef7f524856cb1d3f022"
+    },
+    "module/os/linux/include/gl_ate_agent.h": {
+     "path": "module/os/linux/include/gl_ate_agent.h",
+     "blob": "c61d8f48990be4ff09b3c08149f3e188742b798c",
+     "sha256": "2f0aa2a0c2d40f0732816a75b1e415ef2da78e37384ff1eff8b4edc460ac9c79"
+    },
+    "module/os/linux/include/gl_cfg80211.h": {
+     "path": "module/os/linux/include/gl_cfg80211.h",
+     "blob": "14afaa74fb0aa37520514363c27aa4ef2f3e5c62",
+     "sha256": "9dc864df9d79f5d35d20b7158e40603e0ad80e09972bd60e42dc4fd1d8dcefe4"
+    },
+    "module/os/linux/include/gl_hook_api.h": {
+     "path": "module/os/linux/include/gl_hook_api.h",
+     "blob": "9c14f721036bb612b26285bdd219c474adeaceb9",
+     "sha256": "4539acf529faea09261c70d7c97ce629bd3664a926b1919c5f80eb1dea507511"
+    },
+    "module/os/linux/include/gl_kal.h": {
+     "path": "module/os/linux/include/gl_kal.h",
+     "blob": "1584ff0926a2face6b2a414f66470bb0274447d2",
+     "sha256": "ed67a1124adc6dced1d008c12af6c710d9135f7a3dc566ea01128f62637707e2"
+    },
+    "module/os/linux/include/gl_os.h": {
+     "path": "module/os/linux/include/gl_os.h",
+     "blob": "bb05f3ee4cc5aaf080a84fda29fa824e5cfa2c65",
+     "sha256": "dbf2ef1961589b4ed79a834578dd042ae2ddf258a3148214429a7e6a0f412b54"
+    },
+    "module/os/linux/include/gl_p2p_ioctl.h": {
+     "path": "module/os/linux/include/gl_p2p_ioctl.h",
+     "blob": "414f3830845b8a1da0dd631130582773bc43377c",
+     "sha256": "8c766240608bd691412c798f528c619ae7e37b1467eb148d251a5bc46da5a593"
+    },
+    "module/os/linux/include/gl_p2p_kal.h": {
+     "path": "module/os/linux/include/gl_p2p_kal.h",
+     "blob": "528152a5b5f3b917d69e2c08dbe1c7f056aa614d",
+     "sha256": "7da029a4324f5995b54427343455caebd3d3cce58b3fe7378617821e7fffca72"
+    },
+    "module/os/linux/include/gl_p2p_os.h": {
+     "path": "module/os/linux/include/gl_p2p_os.h",
+     "blob": "4b9f54dc7f4d93f5513190f5173037979ed38a00",
+     "sha256": "2ef7d1c5bc7c781a8f3dd0543564dea9e17cd159efb58f2f56a6ef0aeb0f9ef1"
+    },
+    "module/os/linux/include/gl_qa_agent.h": {
+     "path": "module/os/linux/include/gl_qa_agent.h",
+     "blob": "c0423de149b0b4c0846de9315a09dcdd4102f887",
+     "sha256": "077f50464ae7e6499b59bb07ebb77636de375d1267511999f26bf87b6c9282bf"
+    },
+    "module/os/linux/include/gl_rst.h": {
+     "path": "module/os/linux/include/gl_rst.h",
+     "blob": "cf6799577759a0cc9feb85cea3fcdd46682ea9ac",
+     "sha256": "bcff5fcfbdc1c4fdb85f749c6273f84f896ea633ec5d12aa7580f9cceca25331"
+    },
+    "module/os/linux/include/gl_typedef.h": {
+     "path": "module/os/linux/include/gl_typedef.h",
+     "blob": "3fe754b19857d9a56a3d787155d31baaface955e",
+     "sha256": "29432c9befa27a7452509fbe44ed8505eea1183298b061f05b29877a4c37e03c"
+    },
+    "module/os/linux/include/gl_vendor.h": {
+     "path": "module/os/linux/include/gl_vendor.h",
+     "blob": "49ef83fe792e0d3dabe46b1cef369c4b0b1943d2",
+     "sha256": "e91ece24636dcd0694660cea84ad4164bebb9e7799fab88b99187d16287e4a4f"
+    },
+    "module/os/linux/include/gl_wext.h": {
+     "path": "module/os/linux/include/gl_wext.h",
+     "blob": "4122ea8231f153a212dcf81e057fca7da789c84f",
+     "sha256": "96507e93bcac3a7ad26cb4116503f2dfb8de071cf6ac1d941d4fff5ea94f9633"
+    },
+    "module/os/linux/include/gl_wext_priv.h": {
+     "path": "module/os/linux/include/gl_wext_priv.h",
+     "blob": "a08ee69c935c3de3995ca3dd6fcbd99ea51530e0",
+     "sha256": "61f5b92d7c43a3c03eb5c931b965a4e3f696603aa3a0efb2d725cdd72a98caa9"
+    },
+    "module/os/linux/platform.c": {
+     "path": "module/os/linux/platform.c",
+     "blob": "7e7dc9a29777a71f746ede22e5278b7a48d7455d",
+     "sha256": "e78078348ca86a800dc5e31cfe72281ad952c0970f6e429768f0851480e93515"
+    },
+    "module/os/version.h": {
+     "path": "module/os/version.h",
+     "blob": "05c8e61daa1fef216ac0af25542ccc5dbe4614e3",
+     "sha256": "2b6ab55ef2c0b7f2d6c541e159cc677eb79fba636d13214d03eeb192aaa0ca18"
+    }
+   }
+  }
+ ],
+ "fetched": [
+  {
+   "name": "linux-7.2.13",
+   "url": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.13.tar.xz",
+   "check_url": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.13.tar.xz",
+   "sha256": "08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c",
+   "license": "GPL-2.0 (COPYING)",
+   "pinned_in": [
+    "athena/build.sh",
+    "cronos/build.sh"
+   ],
+   "used_by": "athena, cronos"
+  },
+  {
+   "name": "linux-firmware mediatek/mt7663_n9_rebb.bin",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt7663_n9_rebb.bin?h=20260916",
+   "sha256": "5e1a65036ccf9f53a6f69d9d8f75a07f546f9a7cec83ca89f24907925c54f079",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena"
+  },
+  {
+   "name": "linux-firmware mediatek/mt7663_n9_v3.bin",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt7663_n9_v3.bin?h=20260916",
+   "sha256": "d8b8488f37f65e41ded9a911950afb000d236b36e5aa94ad9650ad0c3a86fd45",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena"
+  },
+  {
+   "name": "linux-firmware mediatek/mt7663pr2h.bin",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt7663pr2h.bin?h=20260916",
+   "sha256": "534f2152f9b0f48dfcec9c1727b0bab9a3727a655d76d5ec818cc39a55602336",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena"
+  },
+  {
+   "name": "linux-firmware mediatek/mt7663pr2h_rebb.bin",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt7663pr2h_rebb.bin?h=20260916",
+   "sha256": "e812442fd631ecbea7d2898c3168cb5780377378a0eed74c14fe8d8057fe547c",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena"
+  },
+  {
+   "name": "linux-firmware LICENSES/LICENCE.mediatek",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/LICENSES/LICENCE.mediatek?h=20260916",
+   "sha256": "a90d3f66704d85889945fec5525ea77622549da83aced1aac99828383f8f1805",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena"
+  },
+  {
+   "name": "linux-firmware mediatek/mt8183/scp.img",
+   "url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt8183/scp.img?h=20260916",
+   "sha256": "401e9c027b0e105efa9eb9b31683924a8d5f5ab3b1654f0915b174effe2df33d",
+   "license": "MediaTek's redistribution license (LICENCE.mediatek)",
+   "pinned_in": [
+    "athena/build.sh"
+   ],
+   "used_by": "athena",
+   "check_url": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/mediatek/mt8183/scp.img?h=20260916"
+  },
+  {
+   "name": "debian:bookworm-slim",
+   "url": "docker.io/library/debian:bookworm-slim",
+   "note": "the build container's base image and, from its apt sources, the toolchain (docker/Dockerfile); not pinned by digest",
+   "license": "Debian's packages, each under its own license",
+   "used_by": "athena, cronos"
+  }
+ ]
+}

@@ -18,12 +18,12 @@ Anything derived from a vendor's unpublished or proprietary sources is not in th
 | Input | Source |
 | --- | --- |
 | Linux 7.2.13 | kernel.org, `linux-7.2.13.tar.xz`, sha256 `08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c` |
-| The board files | `board/`, copied as they are; see "The board files" below |
+| The board files | `board/`, copied as they are; see "The board files" below and [../SOURCES.md](../SOURCES.md) |
 | MT7663 Wi-Fi and Bluetooth firmware, MT8183 SCP firmware | linux-firmware, tag `20260916`, each file pinned by sha256 in `build.sh`; MediaTek's redistribution license `LICENCE.mediatek` |
 
 ## The board files (`board/`)
 
-These files are copied byte for byte from github.com/HuskerMinion/techo5, commit `d44e005b2df507bfeae4703fc3e717f34832038a`, path `tools/linux/athena/kernel` (git tree `460e4e5ea8ae3297a231d05f25b664c82ab0d3b7`), under the MIT license in [board/LICENSE](board/LICENSE).
+These files are copied byte for byte from github.com/HuskerMinion/techo5, commit `d44e005b2df507bfeae4703fc3e717f34832038a`, path `tools/linux/athena/kernel` (git tree `460e4e5ea8ae3297a231d05f25b664c82ab0d3b7`), under the MIT license in [board/LICENSE](board/LICENSE). Each file and its sha256 are in [../SOURCES.md](../SOURCES.md) and `../sources.json`.
 
 Only the files this build uses are copied, at their paths in that directory: the device tree,
 `athena_defconfig`, `src/mt8183-athena.c`, `src/panel/panel-athena-select.c`, `patches/0001`,

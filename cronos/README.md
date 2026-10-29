@@ -42,7 +42,7 @@ The drivers load firmware from the root filesystem, which this repository does n
 
 It writes `amazon/i2s_to_spi_4ch_v208.bin` and `_v193.bin` (the microphone FPGA's bitstreams, found in
 the stock boot image's kernel), `tas5805m/tas5805m_dsp_default.bin` (the amplifier's settings, built
-from Amazon's `tas5805m_mono.h`, downloaded at a pinned commit and checked), the two files given, and
+from Amazon's `tas5805m_mono.h`, in `../third_party/amazon-mt8163/`), the two files given, and
 a `manifest.json` with their sums.
 
 ## Building
@@ -60,8 +60,9 @@ The output (`../out/cronos` by default):
 | `SHA256SUMS`, `manifest.json` | sums, and the manifest (`../README.md`) |
 
 The configuration is `config/cronos.config` with `config/drivers.config`, completed by
-`make olddefconfig`. The build downloads, besides the kernel, three files of Amazon's MT8163 kernel and
-its Wi-Fi driver's tree, at pinned commits, checked by sha256 or git tree hash.
+`make olddefconfig`. Besides the kernel, which it downloads, the build uses files of Amazon's MT8163
+kernel and its Wi-Fi driver, copied into `../third_party/` at pinned commits
+([../SOURCES.md](../SOURCES.md)).
 
 ## The display patches
 
