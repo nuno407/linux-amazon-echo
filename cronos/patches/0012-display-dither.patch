@@ -1,0 +1,19 @@
+The MT8163 dither block's setup, as Amazon's drivers/misc/mediatek/video/mt8163/dispsys/ddp_dither.c
+(android_kernel_amazon_mt8163) writes it: DITHER_REG(0) = 1 (0x100), DITHER_REG(6) = 0x3004 (0x118)
+and DITHER_REG(12) = 0x11 (0x130).
+
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+@@ -157,6 +157,12 @@
+ {
+ 	struct mtk_ddp_comp_dev *priv = dev_get_drvdata(dev);
+ 
++	if (of_device_is_compatible(dev->of_node, "mediatek,mt8163-disp-dither")) {
++		/* MT8163 needs its internal dither engine and lookup mode initialized. */
++		mtk_ddp_write(cmdq_pkt, 1, &priv->cmdq_reg, priv->regs, 0x100);
++		mtk_ddp_write(cmdq_pkt, 0x3004, &priv->cmdq_reg, priv->regs, 0x118);
++		mtk_ddp_write(cmdq_pkt, 0x11, &priv->cmdq_reg, priv->regs, 0x130);
++	}
+ 	mtk_ddp_write(cmdq_pkt, w << 16 | h, &priv->cmdq_reg, priv->regs, DISP_REG_DITHER_SIZE);
+ 	mtk_ddp_write(cmdq_pkt, DITHER_RELAY_MODE, &priv->cmdq_reg, priv->regs,
+ 		      DISP_REG_DITHER_CFG);

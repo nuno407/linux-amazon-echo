@@ -1,16 +1,33 @@
 # The patches and board files, in the order they are applied: one shell command a line, run from the
-# work directory with PUB (this directory), KTREE and KDIR (the kernel tree) set, and apply (build.sh)
-# to apply a patch once. An overlay gives its own series, with these steps and its own in between
-# (README.md, "Overlays").
+# work directory with PUB (this directory), KTREE and KDIR (the kernel tree), WORK and AMZ (Amazon's
+# kernel files, fetched by build.sh) set, and apply (build.sh) to apply a patch once. An overlay gives
+# its own series, with these steps and its own in between (README.md, "Overlays").
 #
 # MT8163 support, from the linux-mtk tree (PROVENANCE.md), carried to 7.2
 apply "$PUB/patches/0000-mt8163-linux-7.2.patch"
 apply "$PUB/patches/0001-mt8163-dtsi-thermal-include.patch"
 apply "$PUB/patches/0003-phy-mtk-mipi-dsi-mt8163-determine-rate.patch"
 apply "$PUB/patches/0004-clk-mt8163-apmixedsys-register-plls-dev.patch"
-# The display: taking the boot loader's scanout over, and its first frame
+# The display: taking the boot loader's scanout over, the dither block, and the first frame
 apply "$PUB/patches/0012-display-handover.patch"
+apply "$PUB/patches/0012-display-dither.patch"
 apply "$PUB/patches/0016-mt8163-display-first-frame.patch"
-# The privacy latch driver, and quieter probes
+# The board: its device tree, the secondary cores, the panel, the sound card, the microphones and their
+# ADC, the amplifier's delays
+sh "$PUB/patches/0002-cronos-board-dtsi.sh"
+sh "$PUB/patches/0004-mt8163-mt-boot.sh"
+sh "$PUB/patches/0005-cronos-panel-driver.sh"
+sh "$PUB/patches/0005-mt8163-cronos-sound.sh"
+sh "$PUB/patches/0006-amazon-spi-pcm.sh"
+python3 "$PUB/patches/port-aic3101.py" "$AMZ/sound/soc/codecs/tlv320aic3101.c" "$AMZ/sound/soc/codecs/tlv320aic3101.h" "$WORK/codec-work"
+sh "$PUB/patches/0007-tlv320aic3101.sh"
+sh "$PUB/patches/0008-tas5805m-delay.sh"
+# The privacy latch driver
 sh "$PUB/patches/0009-cronos-privacy.sh"
+# The camera sensor's initialization, as a header for a capture driver (none here; an overlay may add one)
+python3 "$PUB/patches/port-ov02b10.py" "$AMZ/drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c" "$KTREE/drivers/media/platform/mediatek/ov02b10-init.h"
+# The thermal controller, quieter probes, the video codecs' device, and CPU idle with the screen on
+sh "$PUB/patches/0011-mt8163-thermal.sh"
 sh "$PUB/patches/0013-quiet-probes.sh"
+sh "$PUB/patches/0014-mt8163-vcodec.sh"
+sh "$PUB/patches/0015-mt8163-sodi.sh"

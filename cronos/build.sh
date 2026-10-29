@@ -24,13 +24,24 @@ KVER=7.2.13
 KURL=https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-$KVER.tar.xz
 KSHA256=08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c
 
+# Amazon's GPL kernel for its MT8163 devices: the files the patches port, fetched at build time from
+# this commit and checked by their sha256 (PROVENANCE.md).
+AMAZON_URL=https://raw.githubusercontent.com/amazon-oss/android_kernel_amazon_mt8163
+AMAZON_COMMIT=b27e73e3b00b1184d33f1ae5aa55dc0a1e8d491f
+AMAZON_FILES="
+48c771ff26f0f545d8a2efe8f28de8ec19f35c38bb232cc9fc9be0583b093dce sound/soc/codecs/tlv320aic3101.c
+343499af4967bad5a6d03fb0ed2af2ac3bc00fdf04fcef55f4e8b7872ef7620c sound/soc/codecs/tlv320aic3101.h
+7a75ac0a8cbc19c02d2de8fc43a779fc9c79034b68f4635560bc7dd55b3a5040 drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c
+"
+
 # What an overlay may change. The build's identity is fixed, so a build is reproducible; it is what
 # `uname -v` says, so move the timestamp on whenever the kernel changes.
 SERIES=$HERE/series
 CONFIG=$HERE/config/cronos.config
-CONFIG_FRAGMENTS=()
-# The device tree the boot image carries, from the tree's arch/arm64/boot/dts/mediatek.
-DTB_NAME=mt8163-amazon-cronos-v4.1
+CONFIG_FRAGMENTS=("$HERE/config/drivers.config")
+# The device tree the boot image carries, from the tree's arch/arm64/boot/dts/mediatek: the board's,
+# dts/mt8163-amazon-cronos-v4.1-display.dts.
+DTB_NAME=mt8163-amazon-cronos-v4.1-display
 LOCALVERSION=${LOCALVERSION:--cronos}
 KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-builder}
 KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-cronos-build}
@@ -89,18 +100,24 @@ else
 	tar -C "$WORK" -xJf "$CACHE/linux-$KVER.tar.xz"
 fi
 
-# 2. Patches and board files, one step a line of the series, in order. The scripts find the tree in
-# KDIR.
+# 2. Amazon's kernel files, fetched once into the cache and checked
+AMZ=$CACHE/amazon-mt8163-${AMAZON_COMMIT:0:12}
+echo "$AMAZON_FILES" | while read -r sha path; do
+	if [ -n "$path" ]; then fetch "$AMAZON_URL/$AMAZON_COMMIT/$path" "$AMZ/$path" "$sha"; fi
+done
+
+# 3. Patches and board files, one step a line of the series, in order. The scripts find the tree in
+# KDIR, and Amazon's kernel files in AMZ.
 OVL=${OVL:-}
 KDIR=$KTREE
-export PUB OVL KTREE KDIR WORK
+export PUB OVL KTREE KDIR WORK AMZ
 export -f apply
 while IFS= read -r step; do
 	case $step in ''|'#'*) continue;; esac
 	(cd "$WORK" && eval "$step") || { echo "series step failed: $step" >&2; exit 1; }
 done < "$SERIES"
 
-# 3. Configuration
+# 4. Configuration
 cd "$KTREE"
 mkdir -p out
 cp "$CONFIG" out/.config
@@ -111,7 +128,7 @@ scripts/config --file out/.config --set-str LOCALVERSION "$LOCALVERSION"
 make -s O=out olddefconfig
 grep -qxF "CONFIG_LOCALVERSION=\"$LOCALVERSION\"" out/.config || { echo "config check failed: LOCALVERSION" >&2; exit 1; }
 
-# 4. Build. The device tree is padded, which leaves the boot loader room for its own additions.
+# 5. Build. The device tree is padded, which leaves the boot loader room for its own additions.
 make -s O=out -j"$JOBS" Image.gz dtbs modules
 release=$(make -s O=out kernelrelease)
 cp out/arch/arm64/boot/Image.gz "$OUT/Image.gz"
@@ -119,7 +136,7 @@ dtc -q -I dtb -O dtb -p 262144 -o "$OUT/cronos.dtb" "out/arch/arm64/boot/dts/med
 cp out/.config "$OUT/kernel.config"
 echo "$release" > "$OUT/kernel.release"
 
-# 5. Modules, as lib/modules/<release> under the root of a tarball
+# 6. Modules, as lib/modules/<release> under the root of a tarball
 R=$WORK/modules-root
 rm -rf "$R"
 make -s O=out INSTALL_MOD_PATH="$R" modules_install
