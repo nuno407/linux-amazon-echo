@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 #
 # cronos/build.sh: build Linux 7.2.13 for the Echo Show 5 2nd gen (cronos, MT8163): the kernel, the
-# device tree and the modules. It runs inside the build container; ../build.sh starts it there. See
-# README.md.
+# device tree and the modules, the MT7668 Wi-Fi module among them. It runs inside the build container;
+# ../build.sh starts it there. See README.md.
 #
 # Environment:
 #   WORK       work directory: the kernel tree and its objects (default /src/cronos)
@@ -34,6 +34,12 @@ AMAZON_FILES="
 7a75ac0a8cbc19c02d2de8fc43a779fc9c79034b68f4635560bc7dd55b3a5040 drivers/misc/mediatek/imgsensor/src/mt8163/ov02b10_mipi_raw/ov02bmipiraw_Sensor.c
 "
 
+# Amazon's GPL MT7668 Wi-Fi driver, built out of tree (wifi/build.sh), fetched at build time from this
+# commit and checked by its git tree hash.
+WIFI_REPO=https://github.com/amazon-oss/android_kernel_amazon_mt76x8-wifi.git
+WIFI_COMMIT=214defc87321931c7d2d4444ba40bef56da74e6e
+WIFI_TREE=0770f0e4f4848cc4c7e51a4cf4816511b6cd9df8
+
 # What an overlay may change. The build's identity is fixed, so a build is reproducible; it is what
 # `uname -v` says, so move the timestamp on whenever the kernel changes.
 SERIES=$HERE/series
@@ -47,8 +53,15 @@ KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-builder}
 KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-cronos-build}
 KBUILD_BUILD_TIMESTAMP=${KBUILD_BUILD_TIMESTAMP:-2026-10-28 00:00:00 UTC}
 KBUILD_BUILD_VERSION=${KBUILD_BUILD_VERSION:-1}
+# wifi_module DIR: build the Wi-Fi module against this kernel into DIR/extra. It goes in after
+# modules_install has run depmod: the root filesystem loads it by path.
+wifi_module() {
+	sh "$HERE/wifi/build.sh" "$WIFI_SRC" "$KTREE/out" "${WIFI_BUILD_DIR:-$WORK/wifi}" "$WORK/mt76x8_wlan.ko"
+	mkdir -p "$1/extra"
+	cp "$WORK/mt76x8_wlan.ko" "$1/extra/"
+}
 # Called with the installed modules' directory (lib/modules/<release>) before they are packed.
-modules_hook() { :; }
+modules_hook() { wifi_module "$1"; }
 if [ -n "${OVERLAY:-}" ]; then
 	OVL=$(cd "$OVERLAY" && pwd)
 	# shellcheck source=/dev/null
@@ -100,11 +113,28 @@ else
 	tar -C "$WORK" -xJf "$CACHE/linux-$KVER.tar.xz"
 fi
 
-# 2. Amazon's kernel files, fetched once into the cache and checked
+# 2. Amazon's sources, the kernel files and the Wi-Fi driver's tree, fetched once into
+# the cache and checked
 AMZ=$CACHE/amazon-mt8163-${AMAZON_COMMIT:0:12}
 echo "$AMAZON_FILES" | while read -r sha path; do
 	if [ -n "$path" ]; then fetch "$AMAZON_URL/$AMAZON_COMMIT/$path" "$AMZ/$path" "$sha"; fi
 done
+WIFI_SRC=$CACHE/mt76x8-wifi-${WIFI_COMMIT:0:12}
+if [ ! -f "$WIFI_SRC/.tree" ] || [ "$(cat "$WIFI_SRC/.tree")" != "$WIFI_TREE" ]; then
+	rm -rf "$WIFI_SRC" "$WIFI_SRC.git"
+	git init -q "$WIFI_SRC.git"
+	git -C "$WIFI_SRC.git" fetch -q --depth=1 "$WIFI_REPO" "$WIFI_COMMIT"
+	tree=$(git -C "$WIFI_SRC.git" rev-parse "$WIFI_COMMIT^{tree}")
+	[ "$tree" = "$WIFI_TREE" ] || { echo "$WIFI_REPO $WIFI_COMMIT is tree $tree, not $WIFI_TREE" >&2; exit 1; }
+	mkdir -p "$WIFI_SRC"
+	git -C "$WIFI_SRC.git" archive "$WIFI_COMMIT" | tar -x -C "$WIFI_SRC"
+	# The files as extracted must be that tree, blob for blob.
+	git -C "$WIFI_SRC.git" ls-tree -r "$WIFI_COMMIT" | while read -r mode type sha path; do
+		[ "$(git hash-object "$WIFI_SRC/$path")" = "$sha" ] || { echo "$WIFI_SRC/$path does not match $sha" >&2; exit 1; }
+	done
+	rm -rf "$WIFI_SRC.git"
+	echo "$WIFI_TREE" > "$WIFI_SRC/.tree"
+fi
 
 # 3. Patches and board files, one step a line of the series, in order. The scripts find the tree in
 # KDIR, and Amazon's kernel files in AMZ.
