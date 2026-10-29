@@ -31,14 +31,6 @@ KVER=7.2.13
 KURL=https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-$KVER.tar.xz
 KSHA256=08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c
 
-# The board files: the TECHO5 project's athena kernel directory (MIT; its 6.18 device tree, sound card,
-# panel tables, patches, configuration and boot image packer), fetched at build time from this commit
-# and checked by its git tree hash. base-patches/ holds our changes to them.
-BASE_REPO=https://github.com/HuskerMinion/techo5.git
-BASE_COMMIT=d44e005b2df507bfeae4703fc3e717f34832038a
-BASE_PATH=tools/linux/athena/kernel
-BASE_TREE=460e4e5ea8ae3297a231d05f25b664c82ab0d3b7
-
 # MT7663 Wi-Fi/Bluetooth firmware and the MT8183 SCP firmware from linux-firmware, pinned. They ship
 # as separate files in the boot image's ramdisk, under MediaTek's license, not linked into the kernel.
 FW_TAG=20260916
@@ -102,27 +94,11 @@ else
 	tar -C "$WORK" -xJf "$CACHE/linux-$KVER.tar.xz"
 fi
 
-# 2. The board files, fetched once into the cache (only that directory's files), checked, then copied
-# into the work directory with base-patches/ applied
-BCACHE=$CACHE/techo5-${BASE_COMMIT:0:12}
-if [ ! -f "$BCACHE/.tree" ] || [ "$(cat "$BCACHE/.tree")" != "$BASE_TREE" ]; then
-	rm -rf "$BCACHE" "$BCACHE.git"
-	git init -q "$BCACHE.git"
-	git -C "$BCACHE.git" fetch -q --depth=1 --filter=blob:none "$BASE_REPO" "$BASE_COMMIT"
-	tree=$(git -C "$BCACHE.git" rev-parse "$BASE_COMMIT:$BASE_PATH")
-	[ "$tree" = "$BASE_TREE" ] || { echo "$BASE_REPO $BASE_COMMIT:$BASE_PATH is tree $tree, not $BASE_TREE" >&2; exit 1; }
-	mkdir -p "$BCACHE"
-	git -C "$BCACHE.git" archive "$BASE_COMMIT:$BASE_PATH" | tar -x -C "$BCACHE"
-	# The files as extracted must be that tree, blob for blob.
-	git -C "$BCACHE.git" ls-tree -r "$BASE_COMMIT:$BASE_PATH" | while read -r mode type sha path; do
-		[ "$(git hash-object "$BCACHE/$path")" = "$sha" ] || { echo "$BCACHE/$path does not match $sha" >&2; exit 1; }
-	done
-	rm -rf "$BCACHE.git"
-	echo "$BASE_TREE" > "$BCACHE/.tree"
-fi
+# 2. The board files (board/: the 6.18 device tree, sound card, panel tables, patches, configuration
+# and boot image packer), copied into the work directory with base-patches/ applied
 BASE=$WORK/base
 rm -rf "$BASE"
-cp -R "$BCACHE" "$BASE"
+cp -R "$HERE/board" "$BASE"
 for p in "$HERE"/base-patches/*.patch; do
 	patch -d "$BASE" -p1 -s --no-backup-if-mismatch < "$p"
 done

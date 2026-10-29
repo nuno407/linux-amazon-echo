@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0
-"""Carry the athena base patches (base/patches, from the TECHO5 project, written against 6.18.56)
-over to Linux 7.2. Run before those patchers; build.sh does. Each step is idempotent.
+"""Carry the athena base patches (board/patches, written against 6.18.56) over to Linux 7.2. Run
+before those patchers; build.sh does. Each step is idempotent.
 
   jd9365  7.2's jadard,jd9365da-h3 binding lists more panels than 6.18's, so panel/0003 no longer
           applies. The athena compatibles are added to its enum here, in order, which also makes

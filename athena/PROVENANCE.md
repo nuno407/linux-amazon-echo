@@ -1,7 +1,7 @@
 # athena: where each part comes from
 
-Every patch, driver and setting here is one of the following. The board files the build fetches from
-the TECHO5 project are not here; see "The board files" below.
+Every patch, driver and setting here is one of the following. The board files in `board/` are
+another project's, copied as they are; see "The board files" below.
 
 - **mainline**: from the Linux kernel, a kernel.org release or a public mainline driver, cited;
 - **public tree**: from another public, licensed source tree, cited with its commit or branch. Among
@@ -18,18 +18,20 @@ Anything derived from a vendor's unpublished or proprietary sources is not in th
 | Input | Source |
 | --- | --- |
 | Linux 7.2.13 | kernel.org, `linux-7.2.13.tar.xz`, sha256 `08e7b0c4f2dd1971f972da274b5e589a98989390ac56acd7a1a5af922363ea6c` |
-| The board files | the TECHO5 project, `tools/linux/athena/kernel` at commit `d44e005b2df507bfeae4703fc3e717f34832038a`, git tree `460e4e5ea8ae3297a231d05f25b664c82ab0d3b7`, fetched at build time |
+| The board files | `board/`, copied as they are; see "The board files" below |
 | MT7663 Wi-Fi and Bluetooth firmware, MT8183 SCP firmware | linux-firmware, tag `20260916`, each file pinned by sha256 in `build.sh`; MediaTek's redistribution license `LICENCE.mediatek` |
 
-## The board files (fetched, not in this repository)
+## The board files (`board/`)
 
-`build.sh` fetches `tools/linux/athena/kernel` of the TECHO5 project at commit
-`d44e005b2df507bfeae4703fc3e717f34832038a` and checks it against git tree
-`460e4e5ea8ae3297a231d05f25b664c82ab0d3b7`. That directory is TECHO5's (MIT; its patches and drivers
-GPL-2.0, its device tree GPL-2.0 OR MIT), and so is what its files and comments say: its own provenance
-is that project's. The build uses its device tree, `athena_defconfig`, `src/mt8183-athena.c`,
-`src/panel/panel-athena-select.c`, `patches/0001`, `patches/panel/0001`-`0005`, the `patches/patch-*.py`
-the series names, `dsp_slot.py`, `mkfwcpio.py`, `pack.py` and `check-boot.py`.
+These files are copied byte for byte from github.com/HuskerMinion/techo5, commit `d44e005b2df507bfeae4703fc3e717f34832038a`, path `tools/linux/athena/kernel` (git tree `460e4e5ea8ae3297a231d05f25b664c82ab0d3b7`), under the MIT license in [board/LICENSE](board/LICENSE).
+
+Only the files this build uses are copied, at their paths in that directory: the device tree,
+`athena_defconfig`, `src/mt8183-athena.c`, `src/panel/panel-athena-select.c`, `patches/0001`,
+`patches/panel/0001`-`0005`, the `patches/patch-*.py` the series names (and `patch-tcs3400.py`, which
+`patches/port-7.2.py` runs), `dsp_slot.py`, `mkfwcpio.py`, `pack.py` and `check-boot.py`. Their
+patches and drivers are GPL-2.0 and their device tree GPL-2.0 OR MIT, as their SPDX lines say; the
+rest is MIT. What they say, in code and comments, and where their own parts come from, is their
+authors'.
 
 | Our change | Category | Reference |
 | --- | --- | --- |
@@ -56,7 +58,7 @@ the series names, `dsp_slot.py`, `mkfwcpio.py`, `pack.py` and `check-boot.py`.
 | `mdp3-cached-capture.py` | our own | mainline vb2 (`V4L2_MEMORY_FLAG_NON_COHERENT`) and mtk-mdp3 |
 | `mdp3-rgba.py` | our own | mainline mtk-mdp3's format table and `MDP_COLOR_RGBA8888` (`mtk-mdp3-regs.h`) |
 | `wdt-kexec.py` | our own | mainline mtk_wdt and the watchdog core |
-| `camera-dts.py` | our own, after the board files | the camera's wiring from the camera section of the board files' device tree (`dts/mt8183-amazon-athena.dts` at the pinned commit): the OV13855 at 0x36 on I2C2, reset GPIO102, power-down GPIO177, MCLK on CMMCLK0 (GPIO99), the vcama1, vcamd and vcamio supplies, CSI0 at 0x11c80000, seninf at 0x1a040000, CAMSV1 and its interrupt 258; the node is our own, for `mt8183-athena-camera.c` |
+| `camera-dts.py` | our own, after the board files | the camera's wiring from the camera section of the board files' device tree (`board/dts/mt8183-amazon-athena.dts`): the OV13855 at 0x36 on I2C2, reset GPIO102, power-down GPIO177, MCLK on CMMCLK0 (GPIO99), the vcama1, vcamd and vcamio supplies, CSI0 at 0x11c80000, seninf at 0x1a040000, CAMSV1 and its interrupt 258; the node is our own, for `mt8183-athena-camera.c` |
 | `athena-camera.py`, `mt8183-athena-camera.c` | public tree, and our own | the sensor's register tables are those of MediaTek's OV13855 imgsensor driver, `ov13855mipiraw_Sensor.c` (Copyright 2015 MediaTek Inc., GPL-2.0), as published in UMIDIGI's GPL kernel release for the F2, github.com/UMIDIGI-Official/UMIDIGI-F2-Kernel-Source-Code, branch `main`, commit `900e7d5aa061176e759ea2d3d9679b240a76a27a`, `kernel-4.14 0825/drivers/misc/mediatek/imgsensor/src/common/v1/ov13855_mipi_raw/ov13855mipiraw_Sensor.c`: `sensor_init` and `preview_setting` are its tables as they are (without their leading standby write, 0x0100 = 0; the driver streams with its own), and the full-array mode is the 15 frames a second branch of its `capture_setting` ("full size 15fps for PIP"), likewise, with the lane rate kept at preview's (0x0303 = 1, 0x4837 = 0x1c), a longer line (0x380c/0x380d = 0x0960 for 0x08c4) and a longer frame (0x380e/0x380f = 0x0faa for 0x0c8e). The D-PHY, seninf and CAMSV sequences follow the MT8183 bring-up of BayLibre's MT8365 seninf/CAMSV drivers, github.com/vpavlin/mt8183-camera, commit `c00ad163b8fd65ce7a8f1bf241587923b1a90ead`; the rest is our own, on the mainline V4L2 and videobuf2 APIs, and tests on a unit |
 | `mcdi.py`, `mcdi/athena-mcdi.c` | public tree, and our own | the MCDI mailbox protocol of Amazon's GPL kernel for its MT8183 devices (Fire HD 10, 9th generation; imported from Amazon's `Fire_HD10_9th_Gen-7.3.2.7-20230127.tar.bz2`), github.com/amazon-mt8183-devs/android_kernel_amazon_mt8183, branch `lineage-18.1`, commit `c09e9ccc558148267d7455874dd691ed77b318c1`: `drivers/misc/mediatek/base/power/mcdi/mcdi_v1/mtk_mcdi.c` (`mcdi_task_pause`: 1 to pause, 0 to run, each acknowledged in PAUSE_ACK; `update_avail_cpu_mask_to_mcdi_controller`; the CPU isolation mask) and `drivers/misc/mediatek/base/power/mcdi/include/mcdi_v1/mtk_mcdi_mbox.h` (the slots); the mailbox's address, SSPM mailbox 3 at 0x10480000, from TF-A, github.com/ARM-software/arm-trusted-firmware, tag `v2.12.0`, `plat/mediatek/mt8183/include/platform_def.h` (`SSPM_MBOX_3_BASE`) and `sspm_reg.h`. That the SSPM needs the list on athena, and that the cluster-level states work without `CLUSTER_n_CAN_POWER_OFF`, from tests on a unit |
 

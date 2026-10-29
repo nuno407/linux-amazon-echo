@@ -6,11 +6,11 @@
 
 The series runs it right after panel-dts.py, on every panel.
 
-The wiring is the one the board files' DTS gives in its camera section (TECHO5's
-tools/linux/athena/kernel/dts/mt8183-amazon-athena.dts at the pinned commit, PROVENANCE.md): the
-OV13855 at 0x36 on the bit-banged I2C2 (with its EEPROM at 0x54, unused), reset GPIO102 and power-down
-GPIO177 (low while off), MCLK on CMMCLK0 (GPIO99 function 1) at 24 MHz, and vcama1 2.8 V, vcamd 1.2 V,
-vcamio 1.8 V; CSI0 with four lanes, seninf at 0x1a040000, and CAMSV1 (interrupt 258).
+The wiring is the one the board files' DTS gives in its camera section
+(board/dts/mt8183-amazon-athena.dts, PROVENANCE.md): the OV13855 at 0x36 on the bit-banged I2C2
+(with its EEPROM at 0x54, unused), reset GPIO102 and power-down GPIO177 (low while off), MCLK on
+CMMCLK0 (GPIO99 function 1) at 24 MHz, and vcama1 2.8 V, vcamd 1.2 V, vcamio 1.8 V; CSI0 with four
+lanes, seninf at 0x1a040000, and CAMSV1 (interrupt 258).
 
 That section describes a seninf/CAMSV driver chain this kernel does not have. This kernel drives the
 same sensor, pins and registers through the node below, and the OV13855's address on I2C2 is taken by

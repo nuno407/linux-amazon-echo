@@ -3,21 +3,26 @@
 `build.sh` builds Linux 7.2.13 for the Echo Show 8 2nd gen and packs it into the boot image its boot
 loader (MediaTek's LK, "little kernel") starts. `uname -r` says `7.2.13-athena`.
 
-The board files come from the TECHO5 project's 6.18 kernel (see "The board files" below): the
-device tree, the sound card, the panel tables, the 6.18 patches, the configuration and the boot
-image packer. `patches/port-7.2.py` carries those patches over to 7.2, and the other scripts
+The build starts from the board files in `board/`, written for Linux 6.18 (see "The board files"
+below): the device tree, the sound card, the panel tables, the 6.18 patches, the configuration and
+the boot image packer. `patches/port-7.2.py` carries those patches over to 7.2, and the other scripts
 in `patches/` add what this build changes. [PROVENANCE.md](PROVENANCE.md) lists where each one
 comes from.
 
 ## The board files
 
-They are the TECHO5 project's athena kernel directory, `tools/linux/athena/kernel` of
-github.com/HuskerMinion/techo5 at commit `d44e005b2df507bfeae4703fc3e717f34832038a` (MIT, with GPL-2.0
-patches and drivers and a GPL-2.0 OR MIT device tree). They are not copied into this repository:
-`build.sh` fetches that one directory at that commit (a shallow git fetch that downloads only its
-files), checks that it is git tree `460e4e5ea8ae3297a231d05f25b664c82ab0d3b7` and that every file
-matches its blob, keeps it in the cache, and copies it into the work directory as `base/` for each
-build. What those files say, in code and comments, is that project's.
+`board/` holds them, as they were published (MIT, see [board/LICENSE](board/LICENSE), with GPL-2.0
+patches and drivers and a GPL-2.0 OR MIT device tree, as each file's SPDX line says). Where they come
+from is in [PROVENANCE.md](PROVENANCE.md). `build.sh` copies them into the work directory as `base/`
+for each build. What those files say, in code and comments, is their authors'.
+
+- `dts/mt8183-amazon-athena.dts`: the board's device tree;
+- `athena_defconfig`: the 6.18.56 configuration the build starts from;
+- `src/mt8183-athena.c`: the sound card; `src/panel/panel-athena-select.c`: the panel chosen at boot;
+- `patches/0001-*.patch`, `patches/panel/`, `patches/patch-*.py`: the 6.18 patches, which the
+  series applies (some through `patches/port-7.2.py`);
+- `dsp_slot.py`: the amplifier's tuning slot in the device tree (left empty here);
+- `mkfwcpio.py`, `pack.py`, `check-boot.py`: the firmware ramdisk, the boot image, and its check.
 
 Our changes to them are in `base-patches/`, applied to that copy:
 
@@ -73,7 +78,7 @@ The output (`../out/athena` by default):
 | `config-dropped.txt` | options the 6.18 configuration set that 7.2 no longer has, for review |
 | `SHA256SUMS`, `manifest.json` | sums, and the manifest (`../README.md`) |
 
-The base's `check-boot.py` checks the boot image before the build finishes.
+`board/check-boot.py` (with `base-patches/0002`) checks the boot image before the build finishes.
 
 ## The boot image
 

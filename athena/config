@@ -1,4 +1,4 @@
-# Changes to base/athena_defconfig (the 6.18.56 configuration), as scripts/config arguments, one call a
+# Changes to board/athena_defconfig (the 6.18.56 configuration), as scripts/config arguments, one call a
 # line, applied before `make olddefconfig`.
 #
 # V4L2, for the JPEG encoder, the MDP3 and the camera.

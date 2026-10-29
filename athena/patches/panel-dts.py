@@ -4,19 +4,20 @@
 
     panel-dts.py <mt8183-amazon-athena.dts> <panel>
 
-The DTS drives the ILI9881C on BOE glass, the panel the TECHO5 project tested. The other athena
-panels' init tables are in base/patches/panel, and the DTS's comment at &dsi0 says what using
+The DTS drives the ILI9881C on BOE glass (jd936x_id=0x36, the boot loader's
+ili9881c_wxga_dsi_vdo_st_boe), the one panel its comment at &dsi0 says was tested on a unit. The
+other athena panels' init tables are in board/patches/panel, and that comment says what using
 one takes: its compatible, and for the JD9365 ones the jadard driver's two supplies, vccio-supply =
 <&mt6358_vcama2_reg> and vdd-supply = <&lcd_avee>, in place of the ILI9881C driver's power-supply.
 
 <panel> is the part of the compatible after "amazon,athena-": ili9881c-boe (no change),
 jd9365-boe-new, and so on. The boot loader names the unit's panel with jd936x_id= on its command line
-(the TECHO5 project's docs/install-athena.md, "Which screen"); its low nibble is the variant:
+(read it in /proc/cmdline; the DTS's comment at &dsi0 says the same); its low nibble is the variant:
 """
 import sys
 
 # The panel the boot loader reports by the low nibble of jd936x_id, from the LK panel names in
-# base/patches/panel (only the ones whose nibble the patches state).
+# board/patches/panel (only the ones whose nibble the patches state).
 NIBBLES = {4: "jd9365-boe", 5: "jd9365-boe-new", 6: "ili9881c-boe", 7: "jd9365-inx"}
 JD9365 = ("kd-hsd", "kd-hsd-new", "boe", "boe-new", "inx")
 ILI9881C_LINE = '\t\tcompatible = "amazon,athena-ili9881c-boe", "ilitek,ili9881c";\n'

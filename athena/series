@@ -1,8 +1,8 @@
 # The board files and patches, in the order they are applied: one shell command a line, run from the
-# work directory with PUB (this directory), BASE (the board files build.sh fetched, with
-# base-patches/ applied), KTREE (the kernel tree), DTSDIR, DTS (the athena DTS in the tree), PANEL and
-# MCDI_CPUS set. An overlay gives its own series, with these steps and its own in between (README.md,
-# "Overlays").
+# work directory with PUB (this directory), BASE (board/ as build.sh copies it into the work
+# directory, with base-patches/ applied), KTREE (the kernel tree), DTSDIR, DTS (the athena DTS in the
+# tree), PANEL and MCDI_CPUS set. An overlay gives its own series, with these steps and its own in
+# between (README.md, "Overlays").
 cp "$BASE/dts/mt8183-amazon-athena.dts" "$DTSDIR/"
 python3 "$PUB/patches/panel-dts.py" "$DTS" "$PANEL"
 python3 "$PUB/patches/camera-dts.py" "$DTS"
