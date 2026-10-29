@@ -1,0 +1,18 @@
+# Changes to base/athena_defconfig (the 6.18.56 configuration), as scripts/config arguments, one call a
+# line, applied before `make olddefconfig`.
+#
+# V4L2, for the JPEG encoder and the MDP3 (and a camera driver, where an overlay adds one).
+--enable MEDIA_SUPPORT --enable VIDEO_DEV
+# /proc/net/wireless, where programs read the Wi-Fi signal, comes with cfg80211's wireless extensions.
+--enable CFG80211_WEXT
+# The Mali-G72 (panfrost; the DTS's &gpu, enabled by patches/gpu-dts.py) and the JPEG encoder
+# (mtk-jpeg, mt8183.dtsi's jpeg-encoder).
+--enable DRM_PANFROST --enable VIDEO_MEDIATEK_JPEG
+# The SCP (patches/scp-dts.py) and the MDP3 scaler/converter it plans for (patches/mdp3-mt8183-cros-abi.py).
+--enable MTK_SCP --enable MTK_CMDQ --enable VIDEO_MEDIATEK_MDP3
+# The SCP firmware's EC side: its console in debugfs (cros_scp/console_log), for when a block misbehaves.
+--enable CROS_EC_RPMSG --enable CROS_EC_CHARDEV --enable CROS_EC_DEBUGFS
+# A core that never comes back (stuck in the secure firmware) leaves the others feeding the hardware
+# watchdog, and the unit wedged for good: the lockup detectors panic instead (as does an RCU stall, on
+# pack.py's command line), and panic=5 reboots.
+--enable SOFTLOCKUP_DETECTOR --set-val BOOTPARAM_SOFTLOCKUP_PANIC 1 --enable HARDLOCKUP_DETECTOR --enable BOOTPARAM_HARDLOCKUP_PANIC

@@ -1,0 +1,16 @@
+# The patches and board files, in the order they are applied: one shell command a line, run from the
+# work directory with PUB (this directory), KTREE and KDIR (the kernel tree) set, and apply (build.sh)
+# to apply a patch once. An overlay gives its own series, with these steps and its own in between
+# (README.md, "Overlays").
+#
+# MT8163 support, from the linux-mtk tree (PROVENANCE.md), carried to 7.2
+apply "$PUB/patches/0000-mt8163-linux-7.2.patch"
+apply "$PUB/patches/0001-mt8163-dtsi-thermal-include.patch"
+apply "$PUB/patches/0003-phy-mtk-mipi-dsi-mt8163-determine-rate.patch"
+apply "$PUB/patches/0004-clk-mt8163-apmixedsys-register-plls-dev.patch"
+# The display: taking the boot loader's scanout over, and its first frame
+apply "$PUB/patches/0012-display-handover.patch"
+apply "$PUB/patches/0016-mt8163-display-first-frame.patch"
+# The privacy latch driver, and quieter probes
+sh "$PUB/patches/0009-cronos-privacy.sh"
+sh "$PUB/patches/0013-quiet-probes.sh"

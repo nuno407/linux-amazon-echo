@@ -1,0 +1,190 @@
+diff -ruN a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -4,24 +4,29 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/mailbox_controller.h>
+ #include <linux/of.h>
+ #include <linux/pm_runtime.h>
++#include <linux/reset.h>
+ #include <linux/soc/mediatek/mtk-cmdq.h>
+ #include <linux/soc/mediatek/mtk-mmsys.h>
+ #include <linux/soc/mediatek/mtk-mutex.h>
++#include <linux/workqueue.h>
+ 
+ #include <asm/barrier.h>
+ 
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
++#include <drm/drm_modeset_helper.h>
+ #include <drm/drm_print.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
+ 
+ #include "mtk_crtc.h"
+ #include "mtk_ddp_comp.h"
++#include "mtk_disp_drv.h"
+ #include "mtk_drm_drv.h"
+ #include "mtk_plane.h"
+ 
+@@ -71,6 +76,10 @@
+ 	/* lock for config_updating to cmd buffer */
+ 	spinlock_t			config_lock;
+ 
++	/* checks that the first enable, which takes over from the bootloader, starts the pipeline */
++	struct delayed_work		first_frame_work;
++	bool				first_enable_done;
++
+ 	struct mtk_ddp_comp		*ddp_comp[];
+ };
+ 
+@@ -131,6 +140,7 @@
+ 	struct mtk_crtc *mtk_crtc = to_mtk_crtc(crtc);
+ 	int i;
+ 
++	cancel_delayed_work_sync(&mtk_crtc->first_frame_work);
+ 	mtk_mutex_put(mtk_crtc->mutex);
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	if (mtk_crtc->cmdq_client.chan) {
+@@ -800,6 +810,101 @@
+ 
+ 	drm_crtc_vblank_on(crtc);
+ 	mtk_crtc->enabled = true;
++
++	if (!mtk_crtc->first_enable_done) {
++		mtk_crtc->first_enable_done = true;
++		schedule_delayed_work(&mtk_crtc->first_frame_work, msecs_to_jiffies(1000));
++	}
++}
++
++static bool mtk_crtc_frame_seen(struct mtk_crtc *mtk_crtc)
++{
++	struct drm_crtc *crtc = &mtk_crtc->base;
++	u64 count;
++	bool seen;
++
++	if (drm_crtc_vblank_get(crtc))
++		return true;
++	count = drm_crtc_vblank_count(crtc);
++	seen = wait_event_timeout(*drm_crtc_vblank_waitqueue(crtc),
++				  drm_crtc_vblank_count(crtc) != count,
++				  msecs_to_jiffies(100)) > 0;
++	drm_crtc_vblank_put(crtc);
++	return seen;
++}
++
++/*
++ * On the MT8163 the bootloader sometimes leaves the overlay's memory read wedged (its own boot then
++ * waits out a timeout and shows nothing). Its clocks are still running when the kernel takes over,
++ * so the first enable resets and programs the pipeline without ever gating them, and the overlay
++ * stays stuck: no frame ever completes. A full disable, with the overlay, SMI larb and SMI common
++ * runtime-suspended and their clocks gated, followed by a fresh enable, clears it. A deeper wedge,
++ * with a read lost inside the SMI, also needs the SMI common, larb and overlay resets while
++ * everything is down (the resets leave the SMI's registers as they are), and a power-down of about a
++ * second; one such cycle has not always been enough. So when the first enable produces no frame,
++ * try up to three cycles. The SMI resets are the overlay node's "smi-common" and "smi-larb" resets,
++ * if it has them.
++ */
++static void mtk_crtc_reset_smi(struct device *dev)
++{
++	static const char * const names[] = { "smi-common", "smi-larb" };
++	struct reset_control *rst;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(names); i++) {
++		rst = reset_control_get_optional_exclusive(dev, names[i]);
++		if (IS_ERR_OR_NULL(rst))
++			continue;
++		reset_control_reset(rst);
++		reset_control_put(rst);
++	}
++}
++
++static void mtk_crtc_first_frame_work(struct work_struct *work)
++{
++	struct mtk_crtc *mtk_crtc = container_of(to_delayed_work(work), struct mtk_crtc,
++						 first_frame_work);
++	struct drm_crtc *crtc = &mtk_crtc->base;
++	struct drm_device *drm = crtc->dev;
++	struct mtk_ddp_comp *comp = mtk_crtc->ddp_comp[0];
++	struct device *dev = comp->dev;
++	int ret, ms, try;
++
++	if (!mtk_crtc->enabled || mtk_crtc_frame_seen(mtk_crtc))
++		return;
++
++	drm_warn(drm, "[CRTC:%d] no frame after the first enable; powering the pipeline down and up\n",
++		 crtc->base.id);
++	for (try = 1; try <= 3; try++) {
++		ret = drm_mode_config_helper_suspend(drm);
++		if (ret) {
++			drm_err(drm, "[CRTC:%d] disabling the pipeline failed: %d\n", crtc->base.id, ret);
++			return;
++		}
++		for (ms = 0; ms < 1000 && !pm_runtime_suspended(dev); ms += 10)
++			msleep(10);
++		/*
++		 * The SMI larb and common follow the overlay down through their device links, but
++		 * asynchronously: reset them only once they are surely down, with their clocks gated.
++		 */
++		msleep(1000);
++		if (pm_runtime_suspended(dev)) {
++			mtk_crtc_reset_smi(dev);
++			if (comp->id == DDP_COMPONENT_OVL0)
++				mtk_ovl_reset(dev);
++		}
++		ret = drm_mode_config_helper_resume(drm);
++		if (ret) {
++			drm_err(drm, "[CRTC:%d] re-enabling the pipeline failed: %d\n", crtc->base.id, ret);
++			return;
++		}
++		if (mtk_crtc->enabled && mtk_crtc_frame_seen(mtk_crtc)) {
++			drm_info(drm, "[CRTC:%d] pipeline power-cycled %d time(s): frames running\n",
++				 crtc->base.id, try);
++			return;
++		}
++	}
++	drm_err(drm, "[CRTC:%d] pipeline power-cycled 3 times: still no frame\n", crtc->base.id);
+ }
+ 
+ static void mtk_crtc_atomic_disable(struct drm_crtc *crtc,
+@@ -1118,6 +1223,7 @@
+ 	drm_crtc_enable_color_mgmt(&mtk_crtc->base, 0, has_ctm, gamma_lut_size);
+ 	mutex_init(&mtk_crtc->hw_lock);
+ 	spin_lock_init(&mtk_crtc->config_lock);
++	INIT_DELAYED_WORK(&mtk_crtc->first_frame_work, mtk_crtc_first_frame_work);
+ 
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	i = priv->mbox_index++;
+diff -ruN a/drivers/gpu/drm/mediatek/mtk_disp_drv.h b/drivers/gpu/drm/mediatek/mtk_disp_drv.h
+--- a/drivers/gpu/drm/mediatek/mtk_disp_drv.h
++++ b/drivers/gpu/drm/mediatek/mtk_disp_drv.h
+@@ -80,6 +80,7 @@
+ void mtk_ovl_bgclr_in_off(struct device *dev);
+ void mtk_ovl_bypass_shadow(struct device *dev);
+ int mtk_ovl_clk_enable(struct device *dev);
++void mtk_ovl_reset(struct device *dev);
+ void mtk_ovl_clk_disable(struct device *dev);
+ void mtk_ovl_config(struct device *dev, unsigned int w,
+ 		    unsigned int h, unsigned int vrefresh,
+diff -ruN a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -262,6 +262,13 @@
+ 	return ret;
+ }
+ 
++void mtk_ovl_reset(struct device *dev)
++{
++	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);
++
++	reset_control_reset(ovl->reset);
++}
++
+ void mtk_ovl_clk_disable(struct device *dev)
+ {
+ 	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);

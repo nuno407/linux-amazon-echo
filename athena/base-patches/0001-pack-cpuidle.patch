@@ -1,0 +1,23 @@
+pack.py: CPUIDLE=1 in the environment leaves cpuidle.off=1 off the kernel command line, for a kernel
+that can use the CPU idle states. Our own change.
+
+--- a/pack.py
++++ b/pack.py
+@@ -16,6 +16,7 @@
+ """
+ import hashlib
+ import struct
++import os
+ import sys
+ 
+ BOOT_MAGIC = b"ANDROID!"
+@@ -37,6 +38,9 @@
+            "clk_ignore_unused pd_ignore_unused regulator_ignore_unused cpuidle.off=1 "
+            "loglevel=7 panic=5 sysctl.kernel.panic_on_rcu_stall=1 mem=0x7e150000")
+ EXTRA_CMDLINE = ""
++# CPUIDLE=1 (a kernel that can run the CPU idle states) leaves cpuidle.off=1 out of the command line.
++if os.environ.get("CPUIDLE"):
++    CMDLINE = CMDLINE.replace("cpuidle.off=1 ", "")
+ 
+ BOOT_PARTITION_SIZE = 16 * 1024 * 1024  # athena's boot partition
+ 
