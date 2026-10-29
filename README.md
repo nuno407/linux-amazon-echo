@@ -24,9 +24,10 @@ are trademarks of Amazon.com, Inc. or its affiliates. MediaTek is a trademark of
 - Docker. The build runs in an arm64 Debian 12 container (`docker/Dockerfile`), natively on an arm64
   host (an Apple silicon Mac, for example) and under emulation elsewhere, which is much slower.
 - About 4 GB of disk for each device's kernel tree. It is kept in a Docker volume, not on the host.
-- A network connection the first time: the kernel tarball (about 160 MB) and, for athena, a few
-  firmware files from linux-firmware and the board files from the TECHO5 project are downloaded and
-  checked against their sha256 sums or git tree hash.
+- A network connection the first time: the kernel tarball (about 160 MB); for athena, a few firmware
+  files from linux-firmware and the board files from the TECHO5 project; for cronos, a few files of
+  Amazon's GPL MT8163 kernel and its MT7668 Wi-Fi driver. Each is checked against its sha256 sum or
+  git tree hash.
 
 ## Building
 
@@ -40,7 +41,8 @@ only rebuilds what changed.
 
 Settings, as environment variables: `BUILD_IMAGE` and `VOLUME` choose another container image or
 volume, `WORK` the work directory in the volume, `CACHE` where downloads are kept, `JOBS` the number
-of parallel jobs, and `PANEL` the Echo Show 8's panel (see [athena/README.md](athena/README.md)).
+of parallel jobs, and `PANEL` and `MCDI_CPUS` the Echo Show 8's panel and its CPU idle states (see
+[athena/README.md](athena/README.md)).
 
 ## Artifacts
 
@@ -89,7 +91,7 @@ configuration and steps of its own, and its own build identity. Set `OVERLAY` to
 | `ramdisk_hook` | (athena) a function run on the staged ramdisk firmware |
 | `CPUIDLE` | (athena) set to leave `cpuidle.off=1` off the kernel command line |
 | `DTB_NAME` | (cronos) the device tree to ship, from the tree's `arch/arm64/boot/dts/mediatek` |
-| `modules_hook` | (cronos) a function run on the installed modules before they are packed |
+| `modules_hook` | (cronos) a function run on the installed modules before they are packed; the default builds the Wi-Fi module into them (`wifi_module`), which an overlay's own should call too |
 
 The overlay is mounted read-only at `/overlay` in the container. `PASS_ENV` names more environment
 variables `build.sh` passes into the container, for the overlay's own settings.
@@ -100,6 +102,7 @@ The patches, the drivers and the device trees are under the licenses their files
 everything that goes into the kernel (see [COPYING](COPYING)); a device tree may also be MIT. The build
 scripts are MIT ([LICENSE](LICENSE)). The athena build fetches its board files from the TECHO5
 project (github.com/HuskerMinion/techo5, MIT) at a pinned commit; they are not in this repository
-(see [athena/README.md](athena/README.md), "The board files"). The
+(see [athena/README.md](athena/README.md), "The board files"). The cronos build fetches the files of
+Amazon's GPL kernels it ports, at pinned commits (see [cronos/PROVENANCE.md](cronos/PROVENANCE.md)). The
 firmware files the athena build downloads are MediaTek's, under its license in linux-firmware
 (`LICENCE.mediatek`), and go into the ramdisk as separate files.

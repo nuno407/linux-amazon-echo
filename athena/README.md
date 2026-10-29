@@ -22,7 +22,7 @@ build. What those files say, in code and comments, is that project's.
 Our changes to them are in `base-patches/`, applied to that copy:
 
 - `0001-pack-cpuidle.patch`: with `CPUIDLE` set in the environment, `pack.py` leaves `cpuidle.off=1`
-  off the command line, for a kernel that can use the CPU idle states (an overlay's);
+  off the command line, for a kernel that can use the CPU idle states (this one, see "CPU idle");
 - `0002-check-boot-scp-cpuidle.patch`: `check-boot.py` accepts that command line, and a ramdisk that
   also carries the SCP's firmware (`mediatek/mt8183/scp.img`), which this build adds.
 
@@ -34,7 +34,8 @@ been booted on its own yet.
 
 | Part | State |
 | --- | --- |
-| CPUs (eight cores, two clusters), frequency scaling, thermal throttling | works; the cores idle in WFI (`cpuidle.off=1` on the command line) |
+| CPUs (eight cores, two clusters), frequency scaling, thermal throttling | works |
+| CPU idle: the cores and the clusters powered off between wakes (`patches/mcdi.py`) | works |
 | eMMC, USB | works |
 | Display: ILI9881C panel (the default), JD9365 BOE-new panel (`PANEL=jd9365-boe-new`) | works, with brightness |
 | Touch screen, volume and mute buttons, camera shutter switch, ambient light sensor (TCS3400) | works |
@@ -43,11 +44,17 @@ been booted on its own yet.
 | GPU (Mali-G72 MP3, panfrost) | works, 300 to 800 MHz, under the die's thermal zone |
 | JPEG encoder (mtk-jpeg) | works |
 | SCP (the media co-processor) with linux-firmware's firmware, and the MDP3 scaler and converter through it | works |
-| Camera, hardware video decoding and encoding, the other media blocks | not in this build |
+| Camera (OmniVision OV13855, `patches/athena-camera.py`): packed 10-bit raw frames, 2112x1568 or the whole 4224x3136 array | works |
+| ISP pass 2 in front of the MDP3 (`patches/mdp3-mt8183-isp.py`), face detector (`patches/mtk-fd.py`) | in the tree, not enabled: they need SCP firmware support that is not in this repository |
+| Hardware video decoding and encoding, the other media blocks | not in this build |
 
 ## Building
 
     ../build.sh athena
+
+`MCDI_CPUS` chooses the cores that take the CPU idle states (see "CPU idle"): every core by default,
+a list like `4,5,6,7` for those cores at CPU level only, or `off`, which leaves every core in WFI and
+puts `cpuidle.off=1` on the command line.
 
 `PANEL` picks the panel the device tree drives, as `patches/panel-dts.py` names it: `ili9881c-boe`
 (the default) or one of the JD9365 panels, `jd9365-boe-new` and the others. The boot loader names
@@ -121,3 +128,32 @@ layouts, planned on the SCP and run by the AP's command engine (GCE). Mainline's
 shared structures of an SCP firmware that was never published, and every frame failed;
 `patches/mdp3-mt8183-cros-abi.py` gives it the layout of the ChromeOS 5.10 kernel, which this firmware
 speaks. 1080p NV12 to 720p YUYV runs at well over 25 frames a second for almost no CPU.
+
+## The camera
+
+The OV13855 (13 MP, four-lane CSI-2) runs one fixed path, which `patches/mt8183-athena-camera.c`
+drives itself: mainline has no MT8183 sensor interface or ISP driver.
+
+```
+OV13855 --4 lanes--> CSI0 D-PHY --> seninf1 --> MUX0 --> CAM2 --> CAMSV1 --IMGO DMA (larb6)--> /dev/videoN
+```
+
+| Part | From |
+| --- | --- |
+| Wiring | the board files' device tree (its camera section): I2C2 address 0x36 (EEPROM at 0x54), reset GPIO102, power-down GPIO177, MCLK on CMMCLK0 (GPIO99), vcama1 2.8 V, vcamd 1.2 V, vcamio 1.8 V, CAMSV1 interrupt 258. `patches/camera-dts.py` replaces that section with the node this driver takes |
+| Sensor tables | MediaTek's `ov13855_mipi_raw` imgsensor driver (`sensor_init` and `preview_setting`: 2112x1568 binned, 540 Mbps a lane), with the frame stretched for the exposure; its 15 frames a second `capture_setting` for the whole array, kept at 540 Mbps with a longer line, about 7 frames a second (PROVENANCE.md) |
+| D-PHY, seninf, CAMSV | the MT8183 bring-up of BayLibre's MT8365 seninf/CAMSV drivers (github.com/vpavlin/mt8183-camera) |
+
+The video node is `athena-ov13855`: four pixels in five bytes, least significant bits first, the first
+pixel blue; `V4L2_CID_EXPOSURE` in lines and `V4L2_CID_ANALOGUE_GAIN` in 1/64. CAMSV's `IMGO_ERR`
+(bit 16) stays raised for the whole stream while every frame is whole and correct, so the driver
+leaves that interrupt off.
+
+## CPU idle
+
+On athena the CPUs' idle power-down and wake-up are done by the SSPM's MCDI firmware, which only
+manages the cores the kernel lists as available in its mailbox. Mainline never writes that list, and a
+core that took mainline's PSCI idle state never woke. `patches/mcdi.py` adds `athena-mcdi.c`, which
+keeps the list as Amazon's MT8183 kernel does (PROVENANCE.md), and with it every core takes mainline's
+CPU-level and cluster-level idle states. If the SSPM's MCDI task does not answer at boot, cpuidle is
+turned off and the cores idle in WFI.
