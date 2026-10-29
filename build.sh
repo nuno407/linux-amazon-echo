@@ -14,8 +14,8 @@
 #   VOLUME       the Docker volume mounted at /src (default linux-amazon-echo-src)
 #   WORK         the work directory in the volume (default /src/<device>)
 #   OVERLAY      a host directory to mount as the overlay (README.md, "Overlays")
-#   KTREE, CACHE, JOBS and PANEL are passed on to the device's build.sh when set, and so are the
-#   variables PASS_ENV names (for an overlay's own settings).
+#   KTREE, CACHE, JOBS, PANEL and MCDI_CPUS are passed on to the device's build.sh when set, and so
+#   are the variables PASS_ENV names (for an overlay's own settings).
 set -eu
 R=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 DEV=${1:?usage: build.sh <athena|cronos> [OUT]}
@@ -33,7 +33,7 @@ if [ -n "${OVERLAY:-}" ]; then
 	OVERLAY=$(cd "$OVERLAY" && pwd)
 	set -- "$@" -v "$OVERLAY:/overlay:ro" -e OVERLAY=/overlay -e OVERLAY_COMMIT="$(commit "$OVERLAY")"
 fi
-for v in KTREE CACHE JOBS PANEL ${PASS_ENV:-}; do
+for v in KTREE CACHE JOBS PANEL MCDI_CPUS ${PASS_ENV:-}; do
 	eval "x=\${$v:-}"
 	[ -n "$x" ] && set -- "$@" -e "$v=$x"
 done

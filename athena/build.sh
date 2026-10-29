@@ -12,6 +12,9 @@
 #              idempotent, and make rebuilds only what changed)
 #   JOBS       parallel make jobs (default: nproc)
 #   PANEL      the unit's panel, as patches/panel-dts.py names it (default ili9881c-boe)
+#   MCDI_CPUS  the cores that take the CPU idle states (patches/mcdi.py): a list like 7 or 4,5,6,7
+#              (CPU level only), every core by default (CPU and cluster level), or off (all in WFI,
+#              with cpuidle.off=1 on the command line)
 #   OVERLAY    a directory with athena/overlay.sh, which may add patches, configuration and steps
 #              (see README.md, "Overlays")
 set -euo pipefail
@@ -21,6 +24,8 @@ PUB=$HERE
 WORK=${WORK:-/src/athena}
 JOBS=${JOBS:-$(nproc)}
 PANEL=${PANEL:-ili9881c-boe}
+MCDI_CPUS=${MCDI_CPUS:-0,1,2,3,4,5,6,7}
+[ "$MCDI_CPUS" = off ] && MCDI_CPUS=
 
 KVER=7.2.13
 KURL=https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-$KVER.tar.xz
@@ -58,7 +63,8 @@ KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-builder}
 KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-athena-build}
 KBUILD_BUILD_TIMESTAMP=${KBUILD_BUILD_TIMESTAMP:-2026-10-28 00:00:00 UTC}
 KBUILD_BUILD_VERSION=${KBUILD_BUILD_VERSION:-1}
-CPUIDLE=
+# Set (MCDI_CPUS not off): pack.py leaves cpuidle.off=1 off the command line.
+CPUIDLE=${MCDI_CPUS:+1}
 ramdisk_hook() { :; }
 if [ -n "${OVERLAY:-}" ]; then
 	OVL=$(cd "$OVERLAY" && pwd)
