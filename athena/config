@@ -1,8 +1,10 @@
 # Changes to base/athena_defconfig (the 6.18.56 configuration), as scripts/config arguments, one call a
 # line, applied before `make olddefconfig`.
 #
-# V4L2, for the JPEG encoder and the MDP3 (and a camera driver, where an overlay adds one).
+# V4L2, for the JPEG encoder, the MDP3 and the camera.
 --enable MEDIA_SUPPORT --enable VIDEO_DEV
+# The camera (patches/athena-camera.py), built in: the image ships no modules.
+--enable VIDEO_ATHENA_CAMERA
 # /proc/net/wireless, where programs read the Wi-Fi signal, comes with cfg80211's wireless extensions.
 --enable CFG80211_WEXT
 # The Mali-G72 (panfrost; the DTS's &gpu, enabled by patches/gpu-dts.py) and the JPEG encoder
